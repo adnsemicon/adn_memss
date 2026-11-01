@@ -1,2 +1,2 @@
--i ${ADN_ENDEC}/testbench
-${ADN_ENDEC}/testbench/dummy_tb.sv
+-i ${ADN_MEMSS}/testbench
+${ADN_MEMSS}/testbench/dummy_tb.sv

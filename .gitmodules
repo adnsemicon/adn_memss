@@ -1,3 +1,6 @@
 [submodule "submodule/adn_common"]
 	path = submodule/adn_common
 	url = https://github.com/adnsemicon/adn_common.git
+[submodule "submodule/micron_ddr3"]
+	path = submodule/micron_ddr3
+	url = https://github.com/adnsemicon/micron_ddr3.git
