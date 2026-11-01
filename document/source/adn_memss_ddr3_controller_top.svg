@@ -1,0 +1,105 @@
+<svg height="1990" width="1990" xmlns="http://www.w3.org/2000/svg">
+<rect width="100%" height="100%" x="0" y="0" style="fill:white;stroke:white;stroke-width:0"/>
+<g style="fill:white;stroke:black;stroke-width:1">
+<rect width="1875" height="1875" x="60" y="60"/>
+<polygon points="10,95 10,85 30,85 40,95 60,95 40,95 30,105 10,105 10,95"/>
+<text x="65" y="85" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">clk</text>
+<polygon points="10,145 10,135 30,135 40,145 60,145 40,145 30,155 10,155 10,145"/>
+<text x="65" y="135" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">rtc</text>
+<polygon points="10,195 10,185 30,185 40,195 60,195 40,195 30,205 10,205 10,195"/>
+<text x="65" y="185" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">arst_n</text>
+<polygon points="10,295 10,285 30,285 40,295 60,295 40,295 30,305 10,305 10,295"/>
+<text x="65" y="285" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">mr0</text>
+<polygon points="10,345 10,335 30,335 40,345 60,345 40,345 30,355 10,355 10,345"/>
+<text x="65" y="335" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">mr1</text>
+<polygon points="10,395 10,385 30,385 40,395 60,395 40,395 30,405 10,405 10,395"/>
+<text x="65" y="385" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">mr2</text>
+<polygon points="10,445 10,435 30,435 40,445 60,445 40,445 30,455 10,455 10,445"/>
+<text x="65" y="435" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">mr3</text>
+<polygon points="10,545 10,535 30,535 40,545 60,545 40,545 30,555 10,555 10,545"/>
+<text x="65" y="535" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tRCD</text>
+<polygon points="10,595 10,585 30,585 40,595 60,595 40,595 30,605 10,605 10,595"/>
+<text x="65" y="585" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tRP</text>
+<polygon points="10,645 10,635 30,635 40,645 60,645 40,645 30,655 10,655 10,645"/>
+<text x="65" y="635" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tRAS</text>
+<polygon points="10,695 10,685 30,685 40,695 60,695 40,695 30,705 10,705 10,695"/>
+<text x="65" y="685" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tRC</text>
+<polygon points="10,745 10,735 30,735 40,745 60,745 40,745 30,755 10,755 10,745"/>
+<text x="65" y="735" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tWR</text>
+<polygon points="10,795 10,785 30,785 40,795 60,795 40,795 30,805 10,805 10,795"/>
+<text x="65" y="785" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tRTP</text>
+<polygon points="10,845 10,835 30,835 40,845 60,845 40,845 30,855 10,855 10,845"/>
+<text x="65" y="835" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tWTR</text>
+<polygon points="10,895 10,885 30,885 40,895 60,895 40,895 30,905 10,905 10,895"/>
+<text x="65" y="885" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tRRD</text>
+<polygon points="10,945 10,935 30,935 40,945 60,945 40,945 30,955 10,955 10,945"/>
+<text x="65" y="935" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tFAW</text>
+<polygon points="10,995 10,985 30,985 40,995 60,995 40,995 30,1005 10,1005 10,995"/>
+<text x="65" y="985" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tRFC</text>
+<polygon points="10,1045 10,1035 30,1035 40,1045 60,1045 40,1045 30,1055 10,1055 10,1045"/>
+<text x="65" y="1035" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">tREFI</text>
+<polygon points="10,1145 10,1135 30,1135 40,1145 60,1145 40,1145 30,1155 10,1155 10,1145"/>
+<text x="65" y="1135" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">wa_addr</text>
+<polygon points="10,1195 10,1185 30,1185 40,1195 60,1195 40,1195 30,1205 10,1205 10,1195"/>
+<text x="65" y="1185" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">wa_valid</text>
+<polygon points="10,1245 20,1235 40,1235 40,1245 60,1245 40,1245 40,1255 20,1255 10,1245"/>
+<text x="65" y="1235" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">wa_ready</text>
+<polygon points="10,1345 10,1335 30,1335 40,1345 60,1345 40,1345 30,1355 10,1355 10,1345"/>
+<text x="65" y="1335" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">wd_data</text>
+<polygon points="10,1395 10,1385 30,1385 40,1395 60,1395 40,1395 30,1405 10,1405 10,1395"/>
+<text x="65" y="1385" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">wd_be</text>
+<polygon points="10,1445 10,1435 30,1435 40,1445 60,1445 40,1445 30,1455 10,1455 10,1445"/>
+<text x="65" y="1435" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">wd_valid</text>
+<polygon points="10,1495 20,1485 40,1485 40,1495 60,1495 40,1495 40,1505 20,1505 10,1495"/>
+<text x="65" y="1485" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">wd_ready</text>
+<polygon points="10,1595 10,1585 30,1585 40,1595 60,1595 40,1595 30,1605 10,1605 10,1595"/>
+<text x="65" y="1585" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">ra_addr</text>
+<polygon points="10,1645 10,1635 30,1635 40,1645 60,1645 40,1645 30,1655 10,1655 10,1645"/>
+<text x="65" y="1635" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">ra_valid</text>
+<polygon points="10,1695 20,1685 40,1685 40,1695 60,1695 40,1695 40,1705 20,1705 10,1695"/>
+<text x="65" y="1685" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">ra_ready</text>
+<polygon points="10,1795 10,1785 30,1785 40,1795 60,1795 40,1795 30,1805 10,1805 10,1795"/>
+<text x="65" y="1785" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">init_do</text>
+<polygon points="10,1845 20,1835 40,1835 40,1845 60,1845 40,1845 40,1855 20,1855 10,1845"/>
+<text x="65" y="1835" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">init_done</text>
+<polygon points="10,1895 20,1885 40,1885 40,1895 60,1895 40,1895 40,1905 20,1905 10,1895"/>
+<text x="65" y="1885" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">idle</text>
+<polygon points="1935,995 1955,995 1955,985 1975,985 1985,995 1975,1005 1955,1005 1955,995 1935,995"/>
+<text x="1930" y="985" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">rd_data</text>
+<polygon points="1935,1045 1955,1045 1955,1035 1975,1035 1985,1045 1975,1055 1955,1055 1955,1045 1935,1045"/>
+<text x="1930" y="1035" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">rd_valid</text>
+<polygon points="1935,1095 1955,1095 1965,1085 1985,1085 1985,1095 1985,1105 1965,1105 1955,1095 1935,1095"/>
+<text x="1930" y="1085" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">rd_ready</text>
+<polygon points="1935,1195 1955,1195 1955,1185 1975,1185 1985,1195 1975,1205 1955,1205 1955,1195 1935,1195"/>
+<text x="1930" y="1185" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_ck_p</text>
+<polygon points="1935,1245 1955,1245 1955,1235 1975,1235 1985,1245 1975,1255 1955,1255 1955,1245 1935,1245"/>
+<text x="1930" y="1235" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_ck_n</text>
+<polygon points="1935,1295 1955,1295 1955,1285 1975,1285 1985,1295 1975,1305 1955,1305 1955,1295 1935,1295"/>
+<text x="1930" y="1285" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_rst_n</text>
+<polygon points="1935,1345 1955,1345 1955,1335 1975,1335 1985,1345 1975,1355 1955,1355 1955,1345 1935,1345"/>
+<text x="1930" y="1335" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_cke</text>
+<polygon points="1935,1395 1955,1395 1955,1385 1975,1385 1985,1395 1975,1405 1955,1405 1955,1395 1935,1395"/>
+<text x="1930" y="1385" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_cs_n</text>
+<polygon points="1935,1445 1955,1445 1955,1435 1975,1435 1985,1445 1975,1455 1955,1455 1955,1445 1935,1445"/>
+<text x="1930" y="1435" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_ras_n</text>
+<polygon points="1935,1495 1955,1495 1955,1485 1975,1485 1985,1495 1975,1505 1955,1505 1955,1495 1935,1495"/>
+<text x="1930" y="1485" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_cas_n</text>
+<polygon points="1935,1545 1955,1545 1955,1535 1975,1535 1985,1545 1975,1555 1955,1555 1955,1545 1935,1545"/>
+<text x="1930" y="1535" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_we_n</text>
+<polygon points="1935,1595 1955,1595 1955,1585 1975,1585 1985,1595 1975,1605 1955,1605 1955,1595 1935,1595"/>
+<text x="1930" y="1585" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_odt</text>
+<polygon points="1935,1645 1955,1645 1955,1635 1975,1635 1985,1645 1975,1655 1955,1655 1955,1645 1935,1645"/>
+<text x="1930" y="1635" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_ba</text>
+<polygon points="1935,1695 1955,1695 1955,1685 1975,1685 1985,1695 1975,1705 1955,1705 1955,1695 1935,1695"/>
+<text x="1930" y="1685" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_addr</text>
+<polygon points="1935,1745 1955,1745 1965,1735 1975,1735 1985,1745 1975,1755 1965,1755 1955,1745 1935,1745"/>
+<text x="1930" y="1735" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_dm</text>
+<polygon points="1935,1795 1955,1795 1965,1785 1975,1785 1985,1795 1975,1805 1965,1805 1955,1795 1935,1795"/>
+<text x="1930" y="1785" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_dqs_p</text>
+<polygon points="1935,1845 1955,1845 1965,1835 1975,1835 1985,1845 1975,1855 1965,1855 1955,1845 1935,1845"/>
+<text x="1930" y="1835" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_dqs_n</text>
+<polygon points="1935,1895 1955,1895 1965,1885 1975,1885 1985,1895 1975,1905 1965,1905 1955,1895 1935,1895"/>
+<text x="1930" y="1885" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">ddr3_dq</text>
+<text x="997" y="1950" dominant-baseline="hanging" text-anchor="middle" font-size="30" style="fill:black;stroke:black;stroke-width:0">adn_memss_ddr3_controller</text>
+</g>
+</svg>

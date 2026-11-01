@@ -20,6 +20,7 @@
 [`adn_common_pipeline_join`](https://github.com/adnsemicon/adn_common/blob/main/document/source/adn_common_pipeline_join.md)
 [`adn_common_pipeline`](https://github.com/adnsemicon/adn_common/blob/main/document/source/adn_common_pipeline.md)
 [`adn_common_pipeline_split`](https://github.com/adnsemicon/adn_common/blob/main/document/source/adn_common_pipeline_split.md)
+[`adn_common_pmi_mem`](https://github.com/adnsemicon/adn_common/blob/main/document/source/adn_common_pmi_mem.md)
 [`adn_common_pmi_width_converter_down`](https://github.com/adnsemicon/adn_common/blob/main/document/source/adn_common_pmi_width_converter_down.md)
 [`adn_common_pmi_width_converter_top`](https://github.com/adnsemicon/adn_common/blob/main/document/source/adn_common_pmi_width_converter_top.md)
 [`adn_common_pmi_width_converter_up`](https://github.com/adnsemicon/adn_common/blob/main/document/source/adn_common_pmi_width_converter_up.md)
