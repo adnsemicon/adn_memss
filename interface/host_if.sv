@@ -5,7 +5,7 @@ interface host_if #(
   parameter int BURST_LEN  = 8
 ) (
   input logic clk,
-  input logic rst_n
+  input logic arst_n
 );
 
   // -------------------------------------------------------------------------
