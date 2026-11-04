@@ -42,7 +42,9 @@
 [`adn_common_valid_ready_checker`](https://github.com/adnsemicon/adn_common/blob/main/document/assertion/adn_common_valid_ready_checker.md)
 
 ## INTERFACE
+[`cnfg_if`](document/interface/cnfg_if.md)
 [`dummy_interface`](document/interface/dummy_interface.md)
+[`host_if`](document/interface/host_if.md)
 
 [`adn_common_pmi_if`](https://github.com/adnsemicon/adn_common/blob/main/document/interface/adn_common_pmi_if.md)
 
