@@ -1,0 +1,415 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" style="background: transparent; background-color: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1100px" height="751px" viewBox="-0.5 -0.5 1100 751" content="&lt;mxfile&gt;&lt;diagram name=&quot;Page-1&quot; id=&quot;Q7E56Qcf9kxZ45S0dEeS&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <rect x="4" y="4" width="1090" height="740" rx="259" ry="259" fill="#ffffff" stroke="none" pointer-events="all" style="fill: light-dark(#ffffff, var(--ge-dark-color, #121212));"/>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 928.81 173.16 Q 717 66 293.01 112.39" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 285.06 113.26 L 292.58 108.42 L 293.45 116.37 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204)); stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <ellipse cx="228.5" cy="187.5" rx="91.5" ry="91.5" fill="#fff2cc" stroke="#d6b656" pointer-events="all" style="fill: light-dark(rgb(255, 242, 204), rgb(40, 29, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 181px; height: 1px; padding-top: 188px; margin-left: 138px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                                    <b>
+                                        S_IDLE
+                                    </b>
+                                    <br/>
+                                    cpu_resp_o.mgnt = 1
+                                    <br/>
+                                    mem_req_o.mreq = 0
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="229" y="192" fill="light-dark(#000000, #ffffff)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        S_IDLE...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <ellipse cx="228.5" cy="548" rx="114" ry="114" fill="#fff2cc" stroke="#d6b656" pointer-events="all" style="fill: light-dark(rgb(255, 242, 204), rgb(40, 29, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 226px; height: 1px; padding-top: 548px; margin-left: 116px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                                    <b>
+                                        S_RD
+                                    </b>
+                                    <br/>
+                                    mem_req_o.maddr = addr.q
+                                    <br/>
+                                    mem_req_o.mwe = 0
+                                    <br/>
+                                    mem_req_o = 1
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="229" y="553" fill="light-dark(#000000, #ffffff)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        S_RD...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <ellipse cx="622.5" cy="531.5" rx="135.5" ry="135.5" fill="#fff2cc" stroke="#d6b656" pointer-events="all" style="fill: light-dark(rgb(255, 242, 204), rgb(40, 29, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 269px; height: 1px; padding-top: 532px; margin-left: 488px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                                    <b>
+                                        S_WR
+                                    </b>
+                                    <br/>
+                                    mem_req_o.mwe = 1
+                                    <br/>
+                                    mem_req_o.mreq = 1
+                                    <br/>
+                                    mwdata = storedata/alu_result/rs2
+                                    <br/>
+                                    mstrb = strb/;amo_strb
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="623" y="536" fill="light-dark(#000000, #ffffff)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        S_WR...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <ellipse cx="630.5" cy="199.5" rx="73.5" ry="73.5" fill="#fff2cc" stroke="#d6b656" pointer-events="all" style="fill: light-dark(rgb(255, 242, 204), rgb(40, 29, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 145px; height: 1px; padding-top: 200px; margin-left: 558px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                                    <b>
+                                        S_SC_CHK
+                                    </b>
+                                    <br/>
+                                    rsv_clear_o = 1
+                                    <br/>
+                                    if wr_commit = 1
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="631" y="204" fill="light-dark(#000000, #ffffff)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        S_SC_CHK...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <ellipse cx="960" cy="283" rx="113" ry="113" fill="#fff2cc" stroke="#d6b656" pointer-events="all" style="fill: light-dark(rgb(255, 242, 204), rgb(40, 29, 0)); stroke: light-dark(rgb(214, 182, 86), rgb(109, 81, 0));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 224px; height: 1px; padding-top: 283px; margin-left: 848px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #000000; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#000000, #ffffff); line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                                    <b>
+                                        S_ACK
+                                    </b>
+                                    <br/>
+                                    cpu_rsp_o.mack = 1
+                                    <br/>
+                                    cpu_rsp_o.mrdata = data_o
+                                    <br/>
+                                    cpu_rsp_o.mresp = error
+                                    <div>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="960" y="288" fill="light-dark(#000000, #ffffff)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        S_ACK...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 17 188 Q 77 166 128.42 184.42" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 135.95 187.12 L 127.07 188.19 L 129.77 180.66 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204)); stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 176px; margin-left: 87px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    reset
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="87" y="181" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        reset
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 311.4 150.53 Q 311.4 150.53 548.06 197.72" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 555.9 199.28 L 547.28 201.64 L 548.84 193.79 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204)); stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 175px; margin-left: 434px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    cpu_req_o.mreq &amp;&amp;
+                                    <br/>
+                                    op == sc
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="434" y="180" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        cpu_req_o.mreq &amp;&amp;...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 703.83 194.48 L 870.99 202.65" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 878.98 203.04 L 870.79 206.65 L 871.19 198.66 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204)); stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 197px; margin-left: 791px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    sc_hit = 0
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="791" y="202" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        sc_hit = 0
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 193.91 267.29 Q 167 396 186.12 434.28" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(255, 255, 255));"/>
+            <path d="M 189.7 441.44 L 182.54 436.07 L 189.7 432.49 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(255, 255, 255)); stroke: light-dark(rgb(51, 51, 51), rgb(255, 255, 255));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 357px; margin-left: 178px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    op == LR || op == amo
+                                    <br/>
+                                    || ( op == NONE
+                                    <br/>
+                                    &amp;&amp; !cpu_req_o.mwe)
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="178" y="362" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        op == LR || op == amo...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 342.5 548 Q 342.5 548 478.82 547.48" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 486.82 547.45 L 478.84 551.48 L 478.81 543.48 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204)); stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 596px; margin-left: 417px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                                    mem_rsp_o.mack
+                                    <div>
+                                        &amp;&amp; op == amo
+                                        <br/>
+                                        &amp;&amp;!
+                                        <span style="color: light-dark(rgb(51, 51, 51), rgb(193, 193, 193)); background-color: transparent;">
+                                            mem_rsp_o.mresp
+                                        </span>
+                                        <span style="color: light-dark(rgb(63, 63, 63), rgb(183, 183, 183)); background-color: transparent;">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="417" y="601" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        mem_rsp_o.mack...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g>
+            <path d="M 643.44 270.8 Q 657 306 625.76 387.49" fill="none" stroke="none" pointer-events="stroke"/>
+            <path d="M 622.9 394.96 L 622.03 386.05 L 629.5 388.92 Z" fill="none" stroke="none" pointer-events="all"/>
+            <path d="M 643.44 270.8 C 648.94 294.72 645.52 335.49 625.76 387.49 M 643.44 270.8 C 651.21 297.54 648.06 333.36 625.76 387.49" fill="none" stroke="#333333" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 622.9 394.96 C 622.36 392.23 623.31 389.29 622.03 386.05 C 625.21 386.27 627.76 388.66 629.5 388.92 C 627.29 388.31 628.82 390.59 622.9 394.96" fill="#333333" stroke="none" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 622.9 394.96 C 623.74 392.58 623.79 391.76 622.03 386.05 M 622.9 394.96 C 622.17 392.49 621.92 389.9 622.03 386.05 M 622.03 386.05 C 625.21 385.21 626.98 388.76 629.5 388.92 M 622.03 386.05 C 624.79 386.91 627.61 388.75 629.5 388.92 M 629.5 388.92 C 628.8 390.55 627.81 391.8 622.9 394.96 M 629.5 388.92 C 627.16 390.38 625.73 391.9 622.9 394.96" fill="none" stroke="#333333" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="10" pointer-events="all" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 316px; margin-left: 637px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    sc_hit == 1
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="637" y="321" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        sc_hit == 1
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 221 96 Q 477 36 637 51 Q 797 66 930.74 164.59" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 937.18 169.34 L 928.37 167.81 L 933.11 161.37 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204)); stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 56px; margin-left: 587px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    <span>
+                                        cpu_req_o.mreq &amp;&amp; misalligned:
+                                        <br/>
+                                        error
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="587" y="61" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        cpu_req_o.mreq &amp;&amp; misalligned:...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 316.73 211.74 Q 457 416 501.83 451.82" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+            <path d="M 508.08 456.82 L 499.33 454.95 L 504.33 448.7 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); stroke: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 314px; margin-left: 401px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    mreq &amp;&amp;
+                                    <br/>
+                                    op == NONE
+                                    <br/>
+                                    &amp;&amp; cpu_req_o.mwe
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="401" y="319" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        mreq &amp;&amp;...
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 718.31 435.69 Q 718.31 435.69 871.63 369.61" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(255, 255, 255));"/>
+            <path d="M 878.97 366.44 L 873.21 373.28 L 870.04 365.94 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(255, 255, 255)); stroke: light-dark(rgb(51, 51, 51), rgb(255, 255, 255));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 400px; margin-left: 811px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    mem_rsp.mack
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="811" y="405" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        mem_rsp.mack
+                    </text>
+                </switch>
+            </g>
+        </g>
+        <g style="filter: drop-shadow(light-dark(rgba(0, 0, 0, 0.25), rgba(237, 237, 237, 0.25)) 2px 3px 2px);">
+            <path d="M 271.59 653.79 Q 577 716 662 701 Q 747 686 832 596 Q 917 506 956.68 404.49" fill="none" stroke="#333333" stroke-miterlimit="10" pointer-events="stroke" style="stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+            <path d="M 959.59 397.04 L 960.41 405.95 L 952.95 403.04 Z" fill="#333333" stroke="#333333" stroke-miterlimit="10" pointer-events="all" style="fill: light-dark(rgb(51, 51, 51), rgb(204, 204, 204)); stroke: light-dark(rgb(51, 51, 51), rgb(204, 204, 204));"/>
+        </g>
+        <g>
+            <g transform="translate(-0.5 -0.5)">
+                <switch>
+                    <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 531px; margin-left: 889px;">
+                            <div style="box-sizing: border-box; font-size: 0; text-align: center; color: #333333; background-color: #ffffff; ">
+                                <div style="display: inline-block; font-size: 16px; font-family: &quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;; color: light-dark(#333333, #cccccc); line-height: 1.2; pointer-events: all; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); white-space: nowrap; ">
+                                    mem_rsp_i.mack &amp;&amp;
+                                    <br/>
+                                    || op == (NONE &amp;&amp; !mwe) || LR
+                                </div>
+                            </div>
+                        </div>
+                    </foreignObject>
+                    <text x="889" y="536" fill="light-dark(#333333,#cccccc)" font-family="&quot;Trebuchet MS&quot;, &quot;Verdana&quot;, &quot;Arial&quot;, &quot;sans-serif&quot;" font-size="16px" text-anchor="middle">
+                        mem_rsp_i.mack &amp;&amp;...
+                    </text>
+                </switch>
+            </g>
+        </g>
+    </g>
+    <switch>
+        <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+        <a transform="translate(0,-5)" xlink:href="https://www.drawio.com/doc/faq/svg-export-text-problems" target="_blank">
+            <text text-anchor="middle" font-size="10px" x="50%" y="100%">
+                Text is not SVG - cannot display
+            </text>
+        </a>
+    </switch>
+</svg>
