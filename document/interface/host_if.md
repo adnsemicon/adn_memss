@@ -1,6 +1,6 @@
 # host_if (interface)
 
-### Source: ctrl_if.sv
+### Source: host_if.sv
 
 ## Top IO
 
@@ -8,7 +8,20 @@
 
 ## Parameters
 
-_None_
+|Name|Type|Dimension|Default|Description|
+|-|-|-|-|-|
+|ADDR_WIDTH|int||32||
+|DATA_WIDTH|int||64||
+|BE_WIDTH|int||DATA_WIDTH / 8||
+|BURST_LEN|int||8||
+
+
+## Ports
+
+|Name|Direction|Type|Dimension|Description|
+|-|-|-|-|-|
+|clk|input|logic|||
+|rst_n|input|logic|||
 
 
 ## Description
