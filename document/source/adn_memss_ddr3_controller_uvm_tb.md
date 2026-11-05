@@ -85,70 +85,206 @@ The planned environment uses an active host agent, a configuration driver, a sco
 
 ## 2. Comprehensive Test Suite & Test Cases
 
-### 2.1 DDR3 Initialization Test
-* **Objective:** Verify that the memory controller correctly executes the JEDEC initialization sequence, programs Mode Registers (`MR0`–`MR3`), performs ZQ calibration, and asserts `init_done` via the configuration interface.
-* **Stimulus:** Release hardware reset, invoke `cfg_if.apply_cfg()`, and monitor the initialization process without issuing any host transactions.
-* **Expected Result:** The `init_done` signal asserts high within the expected cycle count. The Micron DRAM model successfully captures the MRS command sequence (`MR2 -> MR3 -> MR1 -> MR0 -> ZQCL`) with zero protocol or timing violations.
-
+### 2.1 DDR3 Reset Test
+ 
+**Objective:** Verify that asserting `arst_n`, at power-up and during active operation, drives the controller and DDR3 interface to a safe, known state, and that no stale state survives into the next initialization.
+ 
+**Preconditions:** Clocks (`clk`, `rtc`) are running and stable. Default parameters with `SIM_SPEED_UP = 1`. The host driver holds all `valid` signals low.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Hold `arst_n = 0` from time zero for N cycles (run with N = 2, 5, 20). | `init_done`, `idle`, `ddr3_rst_n`, `ddr3_cke`, `ddr3_cs_n`, `wa_ready`, `wd_ready`, `ra_ready`, and `rd_valid` hold their reset values on every `clk` edge while reset is low. |
+| 2 | Wait one extra `rtc` period with reset still low. | `ddr3_cs_n` stays inactive; no DDR3 command is issued. |
+| 3 | Release `arst_n`. Do not call `cfg_if.apply_cfg()`. | Outputs stay at their reset values. |
+| 4 | Wait a fixed window (e.g., 5,000 `clk` cycles). | `init_done` stays 0; `ddr3_cke` stays 0; no MRS or other command appears on the DDR3 pins; `wa_ready`, `wd_ready`, `ra_ready` stay 0. |
+| 5 | Call `cfg_if.apply_cfg()` and wait for `init_done`. | `init_done` asserts within `INIT_TIMEOUT_CYCLES`. |
+| 6 | Start `host_rand_traffic_seq` (mixed reads and writes, 20+ transactions queued). | Scoreboard tracks normally. |
+| 7 | At a randomized point in the traffic, assert `arst_n = 0` asynchronously, not aligned to `clk`. | Outputs hold their reset values from the next `clk` edge. |
+| 8 | Kill any pending host sequences. Hold reset for N cycles, then release. | No `ready` or `rd_valid` activity while reset is low. |
+| 9 | Flush the scoreboard: clear the pending-write queue, pending-read queue, and reference memory. | Queues empty; reference memory holds no data. |
+| 10 | Call `cfg_if.apply_cfg()` and wait for `init_done`. | `init_done` asserts within `INIT_TIMEOUT_CYCLES`; the full MRS sequence is seen again. |
+| 11 | Issue 8 writes, then 8 reads, to fresh random aligned addresses. | Scoreboard reports a 100% match. |
+| 12 | Repeat steps 5–11 with a different random reset point each time (e.g., 20 iterations). | All checks hold on every iteration. |
+| 13 | End-of-test checks. | Scoreboard queues empty; zero Micron model errors. |
+ 
+**Expected result:** Every check passes on every iteration; zero scoreboard mismatches after recovery; zero Micron model errors.
+ 
 ---
-
-### 2.2 Single Write and Read Test
-* **Objective:** Verify the basic end-to-end data path for a single 512-bit block transaction (8-beat burst write followed by a read) through the host and physical interfaces.
-* **Stimulus:** Issue one Write command with an 8-beat data payload (`wd_be = 8'hFF`) to a targeted aligned address, followed immediately by a Read request to the same address.
-* **Expected Result:** The Scoreboard successfully correlates the read data returned via `host_if` with the golden memory reference and confirms a 100% data match with zero errors.
-
+ 
+### 2.2 DDR3 Initialization Test
+ 
+**Objective:** Verify that the controller executes the JEDEC initialization sequence, programs Mode Registers (`MR0`–`MR3`) with the values supplied on `mr0`–`mr3`, performs ZQ calibration, and asserts `init_done`, without any host transactions.
+ 
+**Preconditions:** Reset has been applied and released (see 2.1). Clocks are stable. No host traffic is driven. Run 1 uses the baseline `mr0`–`mr3` and timing values; Run 2 uses an alternate valid MR set (different CL/CWL); optional Run 3 uses `SIM_SPEED_UP = 0`.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Drive the config object onto `mr0`–`mr3` and the timing ports. Call `cfg_if.apply_cfg()`. | The configuration stays stable until `init_done`. |
+| 2 | Monitor `ddr3_rst_n` and `ddr3_cke`. | `ddr3_rst_n` releases first, then `ddr3_cke` asserts, as required by the JEDEC power-up sequence and the model. |
+| 3 | Monitor the DDR3 command pins while `init_done = 0`. | No `ACT`, `READ`, `WRITE`, or `REF` commands. |
+| 4 | Observe the MRS commands (`cs_n=0, ras_n=0, cas_n=0, we_n=0`). | Four MRS commands appear in the order MR2, MR3, MR1, MR0, identified by `ddr3_ba` = 2, 3, 1, 0. |
+| 5 | Compare `ddr3_addr` on each MRS command. | Each value equals the matching `mr2`, `mr3`, `mr1`, `mr0` input. |
+| 6 | Observe the ZQ calibration command (`cs_n=0, ras_n=1, cas_n=1, we_n=0`, `A10 = 1`). | One `ZQCL` appears after the MR0 command. |
+| 7 | Check spacing between commands. | No command is issued earlier than the minimum spacing the Micron model enforces (tMRD, tMOD, tZQinit); zero model violations. |
+| 8 | Wait for `init_done`. | `init_done` rises within `INIT_TIMEOUT_CYCLES` (from the controller spec, scaled for `SIM_SPEED_UP`) and stays high. |
+| 9 | Sample `idle`, `wa_ready`, `ra_ready` after `init_done`. | `idle` is high and the host ready signals are in their ready state, as defined by the spec. |
+| 10 | Leave the host idle for a window (e.g., 2,000 `clk` cycles). | Only legal commands appear (refresh, if due); no model violations. |
+| 11 | Repeat from reset with Run 2 (alternate MR set). | Steps 2–10 hold with the new MR values. |
+ 
+**Expected result:** All steps pass in every run; `init_done` asserts within the timeout; MRS order and values are correct; `ZQCL` is present; zero Micron model violations.
+ 
 ---
-
-### 2.3 Masking Test (Byte-Enable Masking)
-* **Objective:** Verify partial block writes using byte-enable (`wd_be`) patterns mapped through the controller to the physical DRAM Data Mask (`ddr3_dm`) pins.
-* **Stimulus:** Write a baseline pattern to an address, then overwrite it using various partial byte masks (`8'hAA`, `8'h55`, `8'h0F`, `8'h00`, etc.). Finally, issue a Read request to verify the stored data.
-* **Expected Result:** The Scoreboard byte-masking logic confirms that only the enabled bytes (`be[i] == 1`) are updated in memory, while masked bytes (`be[i] == 0`) retain their previous baseline values.
-
+ 
+### 2.3 Single Write and Read Test
+ 
+**Objective:** Verify the basic end-to-end data path for a single 512-bit block transaction (8 beats × 64 bits) written and read back through the host and physical interfaces.
+ 
+**Preconditions:** Reset and initialization are complete (`init_done = 1`, `idle = 1`). The scoreboard reference memory is empty. Test addresses are aligned to the 64-byte block size (low 6 address bits = 0).
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Wait for `init_done`. | `idle = 1`. |
+| 2 | Pick an aligned address `A` and a data pattern. | `A[5:0] = 0`. |
+| 3 | Drive the write address: `wa_addr = A`, `wa_valid = 1` until `wa_ready`. | Handshake completes within the timeout; the scoreboard records a pending write at `A`. |
+| 4 | Drive 8 write data beats on `wd_data` with `wd_be = 8'hFF` on every beat, `wd_valid = 1` until `wd_ready` for each beat. | Exactly 8 `wd` handshakes are accepted; `wd_valid` and the payload stay stable until accepted. |
+| 5 | When the last write data beat is accepted, immediately drive the read address: `ra_addr = A`, `ra_valid = 1` until `ra_ready`. | Read handshake completes within the timeout. |
+| 6 | Hold `rd_ready = 1`. Collect read data. | Exactly 8 beats with `rd_valid = 1` are returned, with no extra beats. |
+| 7 | Scoreboard compares the 8 beats, in order, against the reference memory at `A`. | All 8 beats match. |
+| 8 | Wait for the controller to drain. | `idle` returns high within the timeout; no unexpected `rd_valid` or DDR3 activity afterwards. |
+| 9 | Repeat steps 2–8 with low, mid, and high addresses, one address per DRAM bank, two rows of the same bank, and random addresses, using incrementing, all-zeros, all-ones, checkerboard, walking-one, and random data patterns. | All checks hold for every combination. |
+| 10 | End-of-test checks. | Scoreboard queues empty; zero Micron model violations. |
+ 
+**Expected result:** Every combination passes steps 2–8; zero scoreboard mismatches; zero Micron model errors; no timeouts.
+ 
 ---
-
-### 2.4 Burst Test (Back-to-Back Bursts)
-* **Objective:** Verify zero-bubble back-to-back transaction handling and scheduling performance across the host and physical buses.
-* **Stimulus:** Send multiple consecutive Write transactions (e.g., 16 bursts) followed immediately by consecutive Read transactions with zero inter-transaction delay.
-* **Expected Result:** The controller manages traffic seamlessly without data loss, and all read data matches the golden reference.
-
+ 
+### 2.4 Byte-Enable Masking Test
+ 
+**Objective:** Verify partial block writes using `wd_be` patterns mapped through the controller to the DRAM data mask (`ddr3_dm`) pins.
+ 
+**Preconditions:** Reset and initialization are complete. The scoreboard reference memory is empty. Test addresses are aligned to the 64-byte block size.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Write a baseline pattern to address `A` with `wd_be = 8'hFF` on all 8 beats. | Handshakes complete; the scoreboard stores the baseline. |
+| 2 | Overwrite `A` with new data using mask `M` on every beat, taken from the directed list `8'h00`, `8'hFF`, `8'hAA`, `8'h55`, `8'h0F`, `8'hF0`, walking-one, walking-zero. | Exactly 8 `wd` handshakes are accepted; the scoreboard updates only the enabled bytes. |
+| 3 | Read `A` with `rd_ready = 1`. | Exactly 8 beats are returned. |
+| 4 | Compare the read data with the reference memory. | Enabled bytes (`be[i] == 1`) hold the new data; masked bytes (`be[i] == 0`) retain the baseline. |
+| 5 | Repeat steps 1–4 for each mask in the directed list. | All checks hold. |
+| 6 | Repeat steps 1–4 with a random mask per beat, so the mask differs across the 8 beats (e.g., 50 iterations). | All checks hold. |
+| 7 | End-of-test checks. | Scoreboard queues empty; zero Micron model violations. |
+ 
+**Expected result:** Only enabled bytes change in every iteration; masked bytes keep their previous values; zero scoreboard mismatches; zero Micron model errors.
+ 
 ---
-
-### 2.5 Write Backpressure Test
-* **Objective:** Verify controller flow control when write demands exceed processing capacity.
-* **Stimulus:** Flood the host write channels continuously to saturate internal controller queues faster than the DRAM can drain them.
-* **Expected Result:** The controller cleanly de-asserts `wa_ready` and `wd_ready` on `host_if` to stall the host driver, preventing data loss until space clears.
-
+ 
+### 2.5 Back-to-Back Burst Test
+ 
+**Objective:** Verify back-to-back transaction handling and scheduling across the host and physical buses with no idle gaps from the host.
+ 
+**Preconditions:** Reset and initialization are complete. The scoreboard reference memory is empty. 16 distinct aligned addresses are selected.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Send 16 consecutive write transactions (one per address) with zero inter-transaction delay. | Every `wa` and `wd` handshake is accepted; no data is lost. |
+| 2 | Immediately after the last write, send 16 consecutive reads to the same addresses with zero delay and `rd_ready = 1`. | Every read address is accepted; each read returns exactly 8 beats. |
+| 3 | Compare all read data with the reference memory. | All data matches. |
+| 4 | Wait for the controller to drain. | `idle` returns high. |
+| 5 | End-of-test checks. | Scoreboard queues empty; zero Micron model violations. |
+ 
+**Expected result:** No data loss; zero scoreboard mismatches; zero Micron model errors.
+ 
 ---
-
-### 2.6 Read Backpressure Test
-* **Objective:** Verify read data buffering and flow control when the host is unable to accept incoming read data.
-* **Stimulus:** Issue multiple Read requests, then intentionally de-assert `host_if.rd_ready = 1'b0` from the driver side while the controller attempts to return read data.
-* **Expected Result:** The controller holds returning read data safely inside its internal storage and delivers it intact once `rd_ready` re-asserts.
-
+ 
+### 2.6 Write Backpressure Test
+ 
+**Objective:** Verify controller flow control when write demand exceeds what the DRAM can drain.
+ 
+**Preconditions:** Reset and initialization are complete. The scoreboard reference memory is empty. No read traffic is driven during the write flood.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Flood the host write channels: hold `wa_valid` and `wd_valid` high and issue back-to-back writes to random aligned addresses (e.g., 200 transactions). | Handshakes happen only when `wa_ready` / `wd_ready` are high. |
+| 2 | Observe `wa_ready` and `wd_ready` during the flood. | They de-assert only when internal queues are full; `wa_valid`, `wd_valid`, and their payloads stay stable while not ready. |
+| 3 | Continue until all transactions are accepted. | Every accepted handshake is counted by the scoreboard; none is lost or duplicated. |
+| 4 | Wait for the controller to drain, then read back all written addresses. | All read data matches the reference memory. |
+| 5 | End-of-test checks. | Scoreboard queues empty; zero Micron model violations. |
+ 
+**Expected result:** No accepted handshake is lost or duplicated; ready signals de-assert only when queues are full; zero scoreboard mismatches; zero Micron model errors.
+ 
 ---
-
-### 2.7 Random Read-Write Stress Test
-* **Objective:** Validate overall controller stability and data integrity under heavy, randomized traffic conditions.
-* **Stimulus:** Execute a large volume (e.g., 1,000+ transactions) of randomized read/write mixes, random addresses, random byte masks, and decoupled channel delays.
-* **Expected Result:** Zero Scoreboard mismatches, all internal tracking queues empty properly at the end of the simulation, and zero violations reported by the Micron DRAM model.
-
+ 
+### 2.7 Read Backpressure Test
+ 
+**Objective:** Verify read data buffering and flow control when the host cannot accept read data.
+ 
+**Preconditions:** Reset and initialization are complete. The scoreboard reference memory is empty.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Write 16 blocks to distinct aligned addresses. | Writes complete; the scoreboard is updated. |
+| 2 | Issue all 16 read requests back to back with `rd_ready = 0`. | Read addresses are accepted until `ra_ready` de-asserts. |
+| 3 | Keep `rd_ready = 0` for a long stall (e.g., 200 cycles), then toggle it randomly. | While `rd_ready` is low, `rd_valid` and `rd_data` stay stable; no beats are dropped. |
+| 4 | Set `rd_ready = 1` and collect all remaining data. | Each read returns exactly 8 beats, in request order. |
+| 5 | Compare the read data with the reference memory. | All data matches. |
+| 6 | End-of-test checks. | Scoreboard queues empty; zero Micron model violations. |
+ 
+**Expected result:** Data is held intact during stalls and delivered in order once `rd_ready` re-asserts; zero scoreboard mismatches; zero Micron model errors.
+ 
 ---
-
-### 2.8 Refresh Collision Test
-* **Objective:** Verify that periodic DRAM refresh (`tREFI`) cycles are arbitrated correctly without stalling or corrupting active host traffic.
-* **Stimulus:** Run continuous Read/Write traffic while configuring a shorter `tREFI` interval so that refresh requests collide frequently with active transaction bursts.
-* **Expected Result:** The controller finishes ongoing bursts safely, inserts the `REF` command without violating timing constraints, and resumes host traffic smoothly without data loss or model errors.
-
+ 
+### 2.8 Random Read-Write Stress Test
+ 
+**Objective:** Validate stability and data integrity under heavy randomized traffic.
+ 
+**Preconditions:** Reset and initialization are complete. The scoreboard reference memory is empty.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Start a random sequence of 1,000+ transactions with a random read/write mix, random aligned addresses, random byte masks, and random delays on each channel. | Every read is compared against the reference memory as it returns. |
+| 2 | Wait until all transactions complete. | `idle` returns high within the timeout; no hang. |
+| 3 | End-of-test checks. | All scoreboard queues are empty; zero Micron model violations. |
+ 
+**Expected result:** Zero scoreboard mismatches; all queues empty at end of test; zero Micron model errors.
+ 
 ---
-
-### 2.9 On-The-Fly Configuration Change Test
-* **Objective:** Verify dynamic timing updates and mid-traffic re-initialization (`init_do` assertion during active operation) without causing deadlocks, protocol violations, or data corruption.
-* **Stimulus:** 
-  1. Initialize the controller with baseline timing parameters and run continuous Read/Write traffic.
-  2. Dynamically update timing counters (such as `tRP`, `tRCD`, and `tREFI`) on the fly via `cfg_if` without asserting reset or re-init.
-  3. Pulse `init_do = 1'b1` mid-traffic to trigger live mode-register updates (`MR0`–`MR3`) while host transactions are active.
-* **Expected Result:** The controller cleanly throttles `wa_ready`/`ra_ready` during re-initialization, applies the new timing parameters on the fly without violating Micron model constraints, and ensures 100% data match in the Scoreboard across all phases.
-
+ 
+### 2.9 Refresh Collision Test
+ 
+**Objective:** Verify that periodic refresh (`tREFI`) is arbitrated correctly without stalling or corrupting host traffic.
+ 
+**Preconditions:** Reset and initialization are complete. `tREFI` is programmed to a shortened value through `cfg_if` so refresh requests frequently collide with active bursts.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Start continuous read/write traffic. | Scoreboard tracks normally. |
+| 2 | Run for many `tREFI` periods (e.g., 100). | `REF` commands appear at the expected interval; no refresh is missed. |
+| 3 | Observe bursts that overlap a refresh request. | In-flight bursts finish; `REF` is issued without violating timing; traffic resumes without data loss. |
+| 4 | Stop traffic, then read back all written addresses. | All data matches the reference memory. |
+| 5 | End-of-test checks. | Scoreboard queues empty; zero Micron model violations. |
+ 
+**Expected result:** No missed refresh; zero scoreboard mismatches; zero Micron model errors.
+ 
 ---
-
-# whattup! #
+ 
+### 2.10 On-The-Fly Configuration Change Test
+ 
+**Objective:** Verify dynamic timing updates and mid-traffic re-initialization (`init_do` assertion during active operation) without causing deadlocks, protocol violations, or data corruption.
+ 
+**Preconditions:** Reset and initialization are complete with baseline timing values and baseline `mr0`–`mr3`. An alternate valid MR set is prepared. The scoreboard reference memory is empty.
+ 
+| Step | Action | Check |
+|---|---|---|
+| 1 | Start continuous read/write traffic. | Scoreboard tracks normally. |
+| 2 | Update `tRP` through `cfg_if` without reset or re-init. | Traffic continues; no Micron model violations. |
+| 3 | Update `tRCD` through `cfg_if` without reset or re-init. | Traffic continues; no Micron model violations. |
+| 4 | Update `tREFI` through `cfg_if` without reset or re-init. | Refresh cadence follows the new value; no Micron model violations. |
+| 5 | Drive the alternate values on `mr0`–`mr3` and pulse `init_do = 1'b1` while host transactions are active. | `wa_ready` / `ra_ready` are throttled during re-initialization. |
+| 6 | Observe the DDR3 command pins and wait for `init_done`. | MRS commands appear in the order MR2, MR3, MR1, MR0, followed by `ZQCL`, with the new MR values; `init_done` asserts again within `INIT_TIMEOUT_CYCLES`; no deadlock. |
+| 7 | Check transactions that were in flight at the pulse. | They are completed or dropped as defined by the controller spec, and the scoreboard models that behavior. |
+| 8 | Resume traffic, then read back all valid addresses. | All data matches the reference memory. |
+| 9 | End-of-test checks. | Scoreboard queues empty; zero Micron model violations. |
+ 
+**Expected result:** The controller throttles `wa_ready` / `ra_ready` during re-initialization, applies the new timing parameters on the fly without violating Micron model constraints, and the scoreboard shows a 100% data match across all phases.
+ 
+---
