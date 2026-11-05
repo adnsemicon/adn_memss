@@ -1,6 +1,8 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 import ddr3_params_pkg::*;
+`include "test/single_wr_rd_test.sv"
+// `include "../package/host_params_pkg.sv"
 
 module ddr3_controller_uvm_tb;
 
@@ -163,21 +165,9 @@ module ddr3_controller_uvm_tb;
       .BE_WIDTH   (DATA_WIDTH / 8),
       .BURST_LEN  (BURST_LEN)
     ))::set(null, "*", "host_vif", u_host_if);
-
-    // 2. Start Clocks & Apply Reset
-    u_ctrl_if.start_all_clocks(); // clk = ~1.54 GHz, rtc = 100 MHz
-    
-    fork
-      u_ctrl_if.apply_reset(.duration(100ns));
-      u_cnfg_if.reset_cfg();
-    join
-
-    // 3. Apply Default Configuration & Run Initialization
-    u_cnfg_if.apply_cfg();
-
     // 4. Run UVM Test
-    // run_test("base_test");
-    #100us;
+    run_test("single_wr_rd_test");
+    #1000us;
     $finish;
   end
 

@@ -68,8 +68,8 @@ interface host_if #(
     input int                    delay = 0
   );
     repeat (delay) @(posedge clk);
+    @(posedge clk);
     for (int i = 0; i < BURST_LEN; i++) begin
-      @(posedge clk);
       wd_data  <= data[i];
       wd_be    <= be[i];
       wd_valid <= 1'b1;

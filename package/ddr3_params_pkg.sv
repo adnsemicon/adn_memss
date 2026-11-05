@@ -1,3 +1,7 @@
+
+`ifndef __GUARD__DDR3_PARAMS_PKG_SV__
+`define __GUARD__DDR3_PARAMS_PKG_SV__ 0
+
 package ddr3_params_pkg;
 
   parameter int ADDR_WIDTH        = 30;
@@ -17,3 +21,4 @@ package ddr3_params_pkg;
   parameter bit SIM_SPEED_UP      = 1'b1;                 // Fast power-up for simulation
 
 endpackage
+`endif

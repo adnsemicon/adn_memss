@@ -111,6 +111,7 @@ interface cnfg_if #(
     do begin
       @(posedge clk);
     end while (init_done !== 1'b1);
+    #(200us);
   endtask
 
   // Task 3: Shorten tREFI dynamically for Refresh Collision Test

@@ -1,5 +1,7 @@
 `ifndef __GUARD_HOST_DRIVER_SV__
-`define __GUARD_HOST_DRIVER_SV__
+`define __GUARD_HOST_DRIVER_SV__ 0
+
+`include "obj/host_seq_item.sv"
 
 class host_driver extends uvm_driver #(host_seq_item);
   `uvm_component_utils(host_driver)
@@ -17,8 +19,8 @@ class host_driver extends uvm_driver #(host_seq_item);
     super.new(name, parent);
   endfunction
 
-  function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
+  function void connect_phase(uvm_phase phase);
+    super.connect_phase(phase);
 
     if (!uvm_config_db #(virtual host_if #(
       .ADDR_WIDTH (ADDR_WIDTH),
@@ -43,7 +45,6 @@ class host_driver extends uvm_driver #(host_seq_item);
 
   task run_phase(uvm_phase phase);
     host_seq_item item;
-    logic [DATA_WIDTH-1:0] read_data[BURST_LEN];
 
     host_vif.reset_signals();
     wait_for_controller_ready();
@@ -61,12 +62,14 @@ class host_driver extends uvm_driver #(host_seq_item);
       end
 
       case (item.tr_type)
-        HOST_WRITE: host_vif.write(item.addr, item.data, item.be);
+        1'b1: begin
+          host_vif.write(item.addr, item.data, item.be);
+        end
 
-        HOST_READ: begin
+        1'b0: begin
           fork
             host_vif.read_req(item.addr);
-            host_vif.monitor_rd(read_data);
+            host_vif.monitor_rd(item.data); // Directly store read data into item.data
           join
         end
 
@@ -77,5 +80,4 @@ class host_driver extends uvm_driver #(host_seq_item);
     end
   endtask
 endclass
-
 `endif
