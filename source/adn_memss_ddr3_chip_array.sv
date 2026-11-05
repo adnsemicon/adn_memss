@@ -15,8 +15,6 @@ See LICENSE file in the project root for full license information
 
 */
 
-`timescale 1ps / 1ps
-
 module adn_memss_ddr3_chip_array #(
     parameter  int DATA_WIDTH      = 64,
     parameter  int DRAM_CHIP_WIDTH = 16,                            // 16 for x16, 8 for x8
