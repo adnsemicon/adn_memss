@@ -86,29 +86,29 @@ The planned environment uses an active host agent, a configuration driver, a sco
 ## 2. Comprehensive Test Suite & Test Cases
 
 ### 2.1 DDR3 Reset Test
- 
-**Objective:** Verify that asserting `arst_n`, at power-up and during active operation, drives the controller and DDR3 interface to a safe, known state, and that no stale state survives into the next initialization.
- 
-**Preconditions:** Clocks (`clk`, `rtc`) are running and stable. Default parameters with `SIM_SPEED_UP = 1`. The host driver holds all `valid` signals low.
- 
+
+**Objective:** Verify reset outputs at power-up and during active traffic, then check that the controller can be reinitialized and transfer data after reset recovery.
+
+**Preconditions:** Clocks (`clk`, `rtc`) are running and stable. The controller uses `SIM_SPEED_UP = 1`. The configuration interface and host-driven `valid` signals are reset.
+
 | Step | Action | Check |
 |---|---|---|
-| 1 | Hold `arst_n = 0` from time zero for N cycles (run with N = 2, 5, 20). | `init_done`, `idle`, `ddr3_rst_n`, `ddr3_cke`, `ddr3_cs_n`, `wa_ready`, `wd_ready`, `ra_ready`, and `rd_valid` hold their reset values on every `clk` edge while reset is low. |
-| 2 | Wait one extra `rtc` period with reset still low. | `ddr3_cs_n` stays inactive; no DDR3 command is issued. |
-| 3 | Release `arst_n`. Do not call `cfg_if.apply_cfg()`. | Outputs stay at their reset values. |
-| 4 | Wait a fixed window (e.g., 5,000 `clk` cycles). | `init_done` stays 0; `ddr3_cke` stays 0; no MRS or other command appears on the DDR3 pins; `wa_ready`, `wd_ready`, `ra_ready` stay 0. |
-| 5 | Call `cfg_if.apply_cfg()` and wait for `init_done`. | `init_done` asserts within `INIT_TIMEOUT_CYCLES`. |
-| 6 | Start `host_rand_traffic_seq` (mixed reads and writes, 20+ transactions queued). | Scoreboard tracks normally. |
-| 7 | At a randomized point in the traffic, assert `arst_n = 0` asynchronously, not aligned to `clk`. | Outputs hold their reset values from the next `clk` edge. |
-| 8 | Kill any pending host sequences. Hold reset for N cycles, then release. | No `ready` or `rd_valid` activity while reset is low. |
-| 9 | Flush the scoreboard: clear the pending-write queue, pending-read queue, and reference memory. | Queues empty; reference memory holds no data. |
-| 10 | Call `cfg_if.apply_cfg()` and wait for `init_done`. | `init_done` asserts within `INIT_TIMEOUT_CYCLES`; the full MRS sequence is seen again. |
-| 11 | Issue 8 writes, then 8 reads, to fresh random aligned addresses. | Scoreboard reports a 100% match. |
-| 12 | Repeat steps 5–11 with a different random reset point each time (e.g., 20 iterations). | All checks hold on every iteration. |
-| 13 | End-of-test checks. | Scoreboard queues empty; zero Micron model errors. |
- 
-**Expected result:** Every check passes on every iteration; zero scoreboard mismatches after recovery; zero Micron model errors.
- 
+| 1 | Hold `arst_n = 0` for 2, 5, and 20 `clk` cycles in separate runs. | On each sampled `clk` edge, `init_done`, `idle`, `ddr3_rst_n`, and `ddr3_cke` are 0; `ddr3_cs_n` is 1; and `wa_ready`, `wd_ready`, `ra_ready`, and `rd_valid` are 0. |
+| 2 | For each reset width, wait one extra `rtc` period while reset remains low. | The reset outputs retain their reset values when checked after the `rtc` edge. |
+| 3 | Release `arst_n` without calling `cfg_if.apply_cfg()`. | The test expects the controller to remain inactive until configuration is applied. |
+| 4 | Wait 5,000 `clk` cycles without applying configuration. | `init_done`, `ddr3_cke`, `wa_ready`, `wd_ready`, and `ra_ready` remain 0. No DDR3 command is issued. |
+| 5 | Begin each of 20 iterations by calling `cfg_if.apply_cfg()` and waiting for initialization. | `init_done` asserts within `INIT_TIMEOUT_CYCLES`. |
+| 6 | Build a queue of 40 alternating write/read operations using random burst-aligned addresses. Process the operations sequentially; each read uses the address from its preceding write. | The test’s local reference memory records written bytes and checks each read against them. |
+| 7 | After at least one operation completes, wait a random 1–20 `clk` cycles, then assert `arst_n = 0` asynchronously, offset from the clock edge. | On each of the next two sampled `clk` edges, the reset outputs have their reset values. |
+| 8 | Stop the traffic process, reset the host interface signals, and hold reset for an additional 2, 5, or 20 `clk` cycles. | The reset outputs are expected to remain at their reset values during the hold. |
+| 9 | Clear the test’s pending traffic queues and local reference memory. | The queues are empty and the reference memory contains no entries. |
+| 10 | Release reset, call `cfg_if.apply_cfg()`, and wait for initialization. | `init_done` asserts within `INIT_TIMEOUT_CYCLES`. |
+| 11 | Write 8 fresh aligned addresses, then read those same addresses. | Each returned byte matches the value stored in the test’s local reference memory. |
+| 12 | Continue until all 20 iterations are complete, using reset hold lengths of 2, 5, and 20 cycles in rotation. | The expected checks in steps 5–11 pass in every iteration. |
+| 13 | Check the host channels and traffic queues at the end of the test. | No host valid or read-valid signal is active, and both traffic queues are empty. |
+
+**Expected result:** The test’s reset, initialization, traffic, and local readback checks pass in every iteration. Any Micron model violations are reported in the simulation log.
+
 ---
  
 ### 2.2 DDR3 Initialization Test
