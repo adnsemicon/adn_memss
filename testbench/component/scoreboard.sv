@@ -86,23 +86,24 @@ class host_scoreboard extends uvm_scoreboard;
   endfunction
 
   // Print final verification summary at the end of simulation
-  virtual function void report_phase(uvm_phase phase);
-    super.report_phase(phase);
-    `uvm_info("SCB_SUMMARY", $sformatf(
-      "\n========================================\n" ,
-      "       DDR3 SCOREBOARD SUMMARY          \n" ,
-      "========================================\n" ,
-      " Total Writes     : %0d\n"                  ,
-      " Total Reads      : %0d\n"                  ,
-      " Read Matches     : %0d\n"                  ,
-      " Read Mismatches  : %0d\n"                  ,
-      "========================================\n" ,
-      num_writes, num_reads, num_matches, num_mismatches
-    ), UVM_LOW)
-
-    if (num_mismatches > 0) begin
-      `uvm_fatal("SCB_FAIL", $sformatf("Test FAILED with %0d read mismatches!", num_mismatches))
-    end
+virtual function void report_phase(uvm_phase phase);
+  super.report_phase(phase);
+  `uvm_info("SCB_SUMMARY", $sformatf({
+    "\n========================================\n",
+    "       DDR3 SCOREBOARD SUMMARY          \n",
+    "========================================\n",
+    " Total Writes     : %0d\n",
+    " Total Reads      : %0d\n",
+    " Read Matches     : %0d\n",
+    " Read Mismatches  : %0d\n",
+    "========================================\n"},
+    num_writes, num_reads, num_matches, num_mismatches
+  ), UVM_LOW)
+  
+    if (num_mismatches > 0)
+      `uvm_error("SCB_FAIL", $sformatf("%0d read mismatches", num_mismatches))
+    if (num_reads == 0)
+      `uvm_error("SCB_EMPTY", "No reads checked, test passed vacuously")
   endfunction
 
 endclass

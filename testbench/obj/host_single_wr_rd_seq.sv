@@ -15,7 +15,6 @@ virtual task body();
     item = host_seq_item::type_id::create("wr_item");
     start_item(item);
     
-    // শুধু tr_type র‍্যান্ডমাইজ করুন, বাকিগুলো সরাসরি অ্যাসাইন করুন
     if (!item.randomize() with {
       tr_type == 1'b1; // HOST_WRITE
     }) begin

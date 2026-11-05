@@ -59,37 +59,30 @@ interface cnfg_if #(
     tREFI   <= '0;
   endtask
 
-  // Task 2: All-in-one Apply Configuration & Trigger Initialization
-  // Can be called with default arguments: cnfg_vif.apply_cfg();
-  // Or with custom overrides: cnfg_vif.apply_cfg(.in_tREFI(16'd200));
-  task automatic apply_cfg(
-    input logic [DRAM_ADDR_BITS-1:0] in_mr0   = 'h0220, // BL8, CL=6, WR=6, DLL Reset
-    input logic [DRAM_ADDR_BITS-1:0] in_mr1   = 'h0000, // DLL Enable
+
+task automatic apply_cfg(
+    input logic [DRAM_ADDR_BITS-1:0] in_mr0   = 'h0D70, // BL8, CL=6, WR=6, DLL Reset
+    input logic [DRAM_ADDR_BITS-1:0] in_mr1   = 'h0010, // DLL Enable
     input logic [DRAM_ADDR_BITS-1:0] in_mr2   = 'h0000, // CWL=5
     input logic [DRAM_ADDR_BITS-1:0] in_mr3   = 'h0000, // MPR=0
-    input logic [15:0]               in_tRCD  = 16'd6,
-    input logic [15:0]               in_tRP   = 16'd6,
-    input logic [15:0]               in_tRAS  = 16'd15,
-    input logic [15:0]               in_tRC   = 16'd21,
-    input logic [15:0]               in_tWR   = 16'd6,
-    input logic [15:0]               in_tRTP  = 16'd4,
-    input logic [15:0]               in_tWTR  = 16'd4,
-    input logic [15:0]               in_tRRD  = 16'd4,
-    input logic [15:0]               in_tFAW  = 16'd16,
-    input logic [15:0]               in_tRFC  = 16'd64,
-    input logic [15:0]               in_tREFI = 16'd3120
+    input logic [15:0]               in_tRCD  = 16'd4,   // Safe margin for >15ns
+    input logic [15:0]               in_tRP   = 16'd4,   // Safe margin for >15ns
+    input logic [15:0]               in_tRAS  = 16'd8,   // Safe margin for >37.5ns
+    input logic [15:0]               in_tRC   = 16'd12,  // Safe margin for >52.5ns
+    input logic [15:0]               in_tWR   = 16'd4,   // Safe margin for >15ns
+    input logic [15:0]               in_tRTP  = 16'd4,   // min 4tCK
+    input logic [15:0]               in_tWTR  = 16'd4,   // min 4tCK
+    input logic [15:0]               in_tRRD  = 16'd4,   // Safe margin for >10ns
+    input logic [15:0]               in_tFAW  = 16'd10,  // Safe margin for >50ns
+    input logic [15:0]               in_tRFC  = 16'd28,  // Guarantees >120ns tXPR & >110ns tRFC!
+    input logic [15:0]               in_tREFI = 16'd780  // 7.8us refresh interval
   );
-    // Wait until asynchronous reset is released
-    wait (arst_n === 1'b1);
-    @(posedge clk);
 
-    // Drive Mode Registers
     mr0     <= in_mr0;
     mr1     <= in_mr1;
     mr2     <= in_mr2;
     mr3     <= in_mr3;
 
-    // Drive Core DRAM Timings (in RTC ticks)
     tRCD    <= in_tRCD;
     tRP     <= in_tRP;
     tRAS    <= in_tRAS;
@@ -101,17 +94,26 @@ interface cnfg_if #(
     tFAW    <= in_tFAW;
     tRFC    <= in_tRFC;
     tREFI   <= in_tREFI;
-
-    // Pulse init_do for 1 clock cycle to trigger controller initialization
-    init_do <= 1'b1;
-    @(posedge clk);
     init_do <= 1'b0;
 
-    // Wait for controller to complete JEDEC initialization sequence
+    // 2. Wait until asynchronous reset is released
+    wait (arst_n === 1'b1);
+    @(posedge clk);
+
+    // 3. Only pulse init_do if controller was ALREADY initialized (for on-the-fly re-init)
+
+    if (init_done === 1'b1) begin
+      init_do <= 1'b1;
+      @(posedge clk);
+      init_do <= 1'b0;
+      wait (init_done === 1'b0);
+    end
+
+    // 4. Wait for controller to complete JEDEC initialization sequence
     do begin
       @(posedge clk);
     end while (init_done !== 1'b1);
-    #(200us);
+    @(posedge clk);
   endtask
 
   // Task 3: Shorten tREFI dynamically for Refresh Collision Test
