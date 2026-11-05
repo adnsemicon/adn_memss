@@ -2,7 +2,8 @@
 import uvm_pkg::*;
 import ddr3_params_pkg::*;
 `include "test/single_wr_rd_test.sv"
-// `include "../package/host_params_pkg.sv"
+`include "test/byte_enable_masking_test.sv"
+
 
 module ddr3_controller_uvm_tb;
 
@@ -151,6 +152,13 @@ module ddr3_controller_uvm_tb;
   // Simulation Initial Block (Clocks, Reset & Config Execution)
   // -------------------------------------------------------------------------
   initial begin
+    string test_name;
+
+    if (!$value$plusargs("TN=%s", test_name)) begin
+      test_name = "base_test"; 
+    end
+
+
     // 1. Store Virtual Interfaces into UVM Config DB
     $timeformat(-9, 0, "ns");
     $dumpfile("ddr3_controller_uvm_tb.vcd");
@@ -166,9 +174,6 @@ module ddr3_controller_uvm_tb;
       .BURST_LEN  (BURST_LEN)
     ))::set(null, "*", "host_vif", u_host_if);
     // 4. Run UVM Test
-    run_test("single_wr_rd_test");
-    #1000us;
-    $finish;
+    run_test(test_name);
   end
-
 endmodule

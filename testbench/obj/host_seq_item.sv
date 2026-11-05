@@ -18,11 +18,7 @@ class host_seq_item extends uvm_sequence_item;
   }
 
   // XSIM-friendly explicit width replication instead of '1
-  constraint c_default_be {
-    foreach (be[i]) {
-      be[i] == {BE_WIDTH{1'b1}};
-    }
-  }
+  constraint c_default_be { foreach (be[i]) soft be[i] == {BE_WIDTH{1'b1}}; }
 
   `uvm_object_utils_begin(host_seq_item)
     `uvm_field_int(tr_type, UVM_ALL_ON)
