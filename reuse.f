@@ -8,5 +8,5 @@ ${ADN_MEMSS}/source/adn_memss_ddr3_chip_array.sv
 ${ADN_MEMSS}/source/adn_memss_ddr3_controller.sv
 ${ADN_MEMSS}/source/ddr3_fifo_for_ddr3_controller.sv
 -i ${ADN_COMMON}/include
--i ${ADN_MEMSS}/testbench
+-i ${ADN_MEMSS}/package
 -i ${MICRON_DDR3}/include

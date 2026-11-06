@@ -52,7 +52,7 @@ interface host_if #(
   // Drive Write Address (wa)
   task automatic drive_wa(input logic [ADDR_WIDTH-1:0] addr, input int delay = 0);
     repeat (delay) @(posedge clk);
-    @(posedge clk);
+    //@(posedge clk);
     wa_addr  <= addr;
     wa_valid <= 1'b1;
     do begin
@@ -68,7 +68,7 @@ interface host_if #(
     input int                    delay = 0
   );
     repeat (delay) @(posedge clk);
-    @(posedge clk);
+    //@(posedge clk);
     for (int i = 0; i < BURST_LEN; i++) begin
       wd_data  <= data[i];
       wd_be    <= be[i];
@@ -107,9 +107,12 @@ interface host_if #(
   endtask
 
   // Control Read Backpressure (rd_ready)
-  task automatic set_rd_ready(input logic ready_val);
+  task automatic set_rd_backpressure(input int delay = 20);
+    if (rd_ready === 1'b0) return;
     @(posedge clk);
-    rd_ready <= ready_val;
+    rd_ready <= '0;
+    repeat (delay) @(posedge clk);
+    rd_ready <= '1;
   endtask
 
 

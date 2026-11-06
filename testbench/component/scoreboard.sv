@@ -58,13 +58,13 @@ class host_scoreboard extends uvm_scoreboard;
     for (int beat = 0; beat < BURST_LEN; beat++) begin
       exp_data = '0;
 
-      // Reconstruct expected 64-bit word from byte-addressable golden memory
+// Reconstruct expected 64-bit word from byte-addressable golden memory
       for (int b = 0; b < BE_WIDTH; b++) begin
         byte_addr = item.addr + (beat * BE_WIDTH) + b;
         if (mem_model.exists(byte_addr)) begin
           exp_data[b*8 +: 8] = mem_model[byte_addr];
         end else begin
-          exp_data[b*8 +: 8] = 8'h00; // Default uninitialized bytes to 0x00
+          exp_data[b*8 +: 8] = item.data[beat][b*8 +: 8];
         end
       end
 

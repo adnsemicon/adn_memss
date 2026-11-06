@@ -3,6 +3,8 @@ import uvm_pkg::*;
 import ddr3_params_pkg::*;
 `include "test/single_wr_rd_test.sv"
 `include "test/byte_enable_masking_test.sv"
+`include "test/back_to_back_burst_test.sv"
+`include "test/read_back_pressure_test.sv"
 
 
 module ddr3_controller_uvm_tb;

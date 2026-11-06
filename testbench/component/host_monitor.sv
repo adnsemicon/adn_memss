@@ -15,6 +15,12 @@ class host_monitor extends uvm_monitor;
 
   uvm_analysis_port #(host_seq_item) ap;
 
+    // Queues to track decoupled Write and Read channels independently
+    logic [ADDR_WIDTH-1:0] wa_q[$];
+    host_seq_item          wd_q[$];
+    logic [ADDR_WIDTH-1:0] ra_q[$];
+
+
   function new(string name = "host_monitor", uvm_component parent = null);
     super.new(name, parent);
   endfunction
@@ -38,39 +44,66 @@ class host_monitor extends uvm_monitor;
     end
   endfunction
 
+// Helper task: waits until all pending Reads and Writes have completed
+  task wait_for_idle();
+    // 1. Wait a few cycles for the last address handshake to enter the queue
+    repeat (5) @(posedge host_vif.clk);
+    
+    // 2. Wait until all queued Read and Write addresses have been matched with data
+    wait (ra_q.size() == 0 && wa_q.size() == 0 && wd_q.size() == 0);
+    
+    // 3. Small buffer for scoreboard processing
+    repeat (5) @(posedge host_vif.clk);
+  endtask
+
   task run_phase(uvm_phase phase);
-    host_seq_item item;
 
     wait (host_vif.arst_n === 1'b1);
 
-    forever begin
-      // Create a single item for the current transaction
-      item = host_seq_item::type_id::create("item");
+    fork      
+      // Thread 1: Capture Write Address and push to queue
+      forever begin
+        logic [ADDR_WIDTH-1:0] w_addr;
+        host_vif.monitor_wa(w_addr);
+        wa_q.push_back(w_addr);
+      end
 
-      fork
-        // Branch 1: Wait for a Write transaction
-        begin
-          fork
-            host_vif.monitor_wa(item.addr);
-            host_vif.monitor_wd(item.data, item.be);
-          join
-          item.tr_type = 1'b1; // HOST_WRITE
-        end
+      // Thread 2: Capture Write Data & Byte-Enables and push to queue
+      forever begin
+        host_seq_item wd_item = host_seq_item::type_id::create("wd_item");
+        host_vif.monitor_wd(wd_item.data, wd_item.be);
+        wd_q.push_back(wd_item);
+      end
 
-        // Branch 2: Wait for a Read transaction
-        begin
-          fork
-            host_vif.monitor_ra(item.addr);
-            host_vif.monitor_rd(item.data);
-          join
-          item.tr_type = 1'b0; // HOST_READ
-        end
-      join_any
-      disable fork; // Kill the unused branch once Write or Read completes
+      // Thread 3: Pair Write Address with Write Data and send to Scoreboard
+      forever begin
+        host_seq_item wr_item;
+        wait (wa_q.size() > 0 && wd_q.size() > 0);
+        
+        wr_item         = wd_q.pop_front();
+        wr_item.addr    = wa_q.pop_front();
+        wr_item.tr_type = 1'b1; // HOST_WRITE
+        ap.write(wr_item);
+      end
 
-      // Send the single captured item to the scoreboard
-      ap.write(item);
-    end
+      // Thread 4: Capture Read Address and push to queue
+      forever begin
+        logic [ADDR_WIDTH-1:0] r_addr;
+        host_vif.monitor_ra(r_addr);
+        ra_q.push_back(r_addr);
+      end
+
+      // Thread 5: Capture Read Data, pop matching Read Address, and send to Scoreboard
+      forever begin
+        host_seq_item rd_item = host_seq_item::type_id::create("rd_item");
+        host_vif.monitor_rd(rd_item.data);
+        
+        wait (ra_q.size() > 0);
+        rd_item.addr    = ra_q.pop_front();
+        rd_item.tr_type = 1'b0; // HOST_READ
+        ap.write(rd_item);
+      end
+    join
   endtask
 
 endclass

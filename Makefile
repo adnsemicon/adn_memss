@@ -113,7 +113,6 @@ $(REPO_ROOT)/reuse.f:
 	@echo -e "\033[1;33m#\033[0m Generating Reusable IP Filelist"
 	@echo "-i $(REPO_ROOT)/include" > $(REPO_ROOT)/reuse.f
 	@echo "-i $(REPO_ROOT)/package" > $(REPO_ROOT)/reuse.f
-	@echo "-i $(REPO_ROOT)/testbench" > $(REPO_ROOT)/reuse.f
 ifeq ($(HAS_SUBMODULES), 1)
 	@((cat $$(find $(REPO_ROOT)/submodule -mindepth 2 -maxdepth 2 -name "reuse.f") || true) | grep -E "^-i " ) >> $(REPO_ROOT)/reuse.f
 endif

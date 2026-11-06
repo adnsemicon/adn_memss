@@ -13,6 +13,8 @@ class host_single_wr_rd_seq extends uvm_sequence #(host_seq_item);
     `uvm_do_with(req, {
       tr_type == 1'b1; // HOST_WRITE
       addr    == 'h0;    // Address 0x00000000
+      foreach (be[i]) be[i] == {BE_WIDTH{1'b1}}; // Enable all byte enables 
+      wr_back_pressure == 1'b0; // Ensure no write back-pressure  
     })
     `uvm_info("SEQ", "Single Write transaction completed", UVM_LOW)
 
@@ -20,6 +22,7 @@ class host_single_wr_rd_seq extends uvm_sequence #(host_seq_item);
     `uvm_do_with(req, {
       tr_type == 1'b0;   // HOST_READ
       addr    == 'h0; // Address 0x00000000
+      rd_back_pressure == 1'b0; // Ensure no read back-pressure
     })
     `uvm_info("SEQ", "Single Read transaction completed", UVM_LOW)
   endtask

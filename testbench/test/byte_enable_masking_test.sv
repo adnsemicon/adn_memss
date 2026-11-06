@@ -2,7 +2,7 @@
 `define __GUARD_BYTE_ENABLE_MASKING_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/byte_enable_seq.sv"
+`include "obj/byte_enable_masking_seq.sv"
 
 class byte_enable_masking_test extends base_test;
   `uvm_component_utils(byte_enable_masking_test)
@@ -22,8 +22,7 @@ class byte_enable_masking_test extends base_test;
     seq = byte_enable_seq::type_id::create("seq");
     seq.start(env.agt.sqr);
 
-    // Wait a few cycles for the final read data to reach the monitor & scoreboard
-    repeat (20) @(posedge host_vif.clk);
+    env.agt.mon.wait_for_idle();
 
     `uvm_info("TEST", "Completed byte_enable_masking_test sequence!", UVM_LOW)
     phase.drop_objection(this);

@@ -14,6 +14,7 @@ class host_driver extends uvm_driver #(host_seq_item);
   ) host_vif;
 
   virtual cnfg_if #(.DRAM_ADDR_BITS(DRAM_ADDR_BITS)) cnfg_vif;
+  virtual ctrl_if ctrl_vif;
 
   function new(string name = "host_driver", uvm_component parent = null);
     super.new(name, parent);
@@ -36,6 +37,10 @@ class host_driver extends uvm_driver #(host_seq_item);
     ))::get(this, "", "cnfg_vif", cnfg_vif)) begin
       `uvm_fatal("NOVIF", "cnfg_vif was not configured for host_driver")
     end
+
+    if (!uvm_config_db #(virtual ctrl_if)::get(this, "", "ctrl_vif", ctrl_vif)) begin
+      `uvm_fatal("NOVIF", "ctrl_vif was not configured for host_driver")
+    end
   endfunction
 
   task automatic wait_for_controller_ready();
@@ -53,24 +58,19 @@ class host_driver extends uvm_driver #(host_seq_item);
       seq_item_port.get_next_item(item);
       wait_for_controller_ready();
 
-      if ($isunknown(item.addr) ||
-          ((item.addr % (BE_WIDTH * BURST_LEN)) != 0)) begin
-        `uvm_fatal("ALIGN", $sformatf(
-          "Host address 0x%0h is unknown or not aligned to the %0d-byte burst size",
-          item.addr, BE_WIDTH * BURST_LEN
-        ))
-      end
-
       case (item.tr_type)
         1'b1: begin
           host_vif.write(item.addr, item.data, item.be);
         end
 
         1'b0: begin
-          fork
-            host_vif.read_req(item.addr);
-            host_vif.monitor_rd(item.data); // Directly store read data into item.data
-          join
+          if (item.rd_back_pressure) begin
+            fork
+              host_vif.set_rd_backpressure(80); // 80 cycles is plenty for 4 DRAM reads
+            join_none
+          end
+          host_vif.read_req(item.addr);
+
         end
 
         default: `uvm_fatal("BADTYPE", "Unsupported host transaction type")

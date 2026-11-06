@@ -22,8 +22,7 @@ class single_wr_rd_test extends base_test;
     seq = host_single_wr_rd_seq::type_id::create("seq");
     seq.start(env.agt.sqr);
 
-    // Wait a few cycles for the final read data to reach the monitor & scoreboard
-    repeat (20) @(posedge host_vif.clk);
+    env.agt.mon.wait_for_idle();
 
     `uvm_info("TEST", "Completed single_wr_rd_test sequence!", UVM_LOW)
     phase.drop_objection(this);
