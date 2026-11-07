@@ -5,6 +5,9 @@ import ddr3_params_pkg::*;
 `include "test/byte_enable_masking_test.sv"
 `include "test/back_to_back_burst_test.sv"
 `include "test/read_back_pressure_test.sv"
+//`include "test/write_back_pressure_test.sv"
+`include "test/random_stress_test.sv"
+`include "test/refresh_collision_test.sv"
 
 
 module ddr3_controller_uvm_tb;
@@ -28,24 +31,13 @@ module ddr3_controller_uvm_tb;
         .arst_n(u_ctrl_if.arst_n)
   );
 
-  // -------------------------------------------------------------------------
-  // Interconnect Wires between Controller and DDR3 Chip Array
-  // -------------------------------------------------------------------------
-  logic                       ddr3_ck_p;
-  logic                       ddr3_ck_n;
-  logic                       ddr3_rst_n;
-  logic                       ddr3_cke;
-  logic                       ddr3_cs_n;
-  logic                       ddr3_ras_n;
-  logic                       ddr3_cas_n;
-  logic                       ddr3_we_n;
-  logic                       ddr3_odt;
-  logic [DRAM_BA_BITS-1:0]    ddr3_ba;
-  logic [DRAM_ADDR_BITS-1:0]  ddr3_addr;
-  wire  [DM_WIDTH-1:0]        ddr3_dm;
-  wire  [DQS_WIDTH-1:0]       ddr3_dqs_p;
-  wire  [DQS_WIDTH-1:0]       ddr3_dqs_n;
-  wire  [DATA_WIDTH-1:0]      ddr3_dq;
+  ddr3_if #(
+    .DRAM_BA_BITS   (DRAM_BA_BITS  ),  
+    .DRAM_ADDR_BITS (DRAM_ADDR_BITS),   
+    .DM_WIDTH       (DM_WIDTH      ),  
+    .DQS_WIDTH      (DQS_WIDTH     ),  
+    .DATA_WIDTH     (DATA_WIDTH    )     
+  ) u_ddr3_if();
 
   // -------------------------------------------------------------------------
   // DUT: ADN DDR3 Memory Controller Instantiation
@@ -103,21 +95,21 @@ module ddr3_controller_uvm_tb;
     .rd_ready        (u_host_if.rd_ready),
 
     // DDR3 Physical Interface Wires
-    .ddr3_ck_p       (ddr3_ck_p),
-    .ddr3_ck_n       (ddr3_ck_n),
-    .ddr3_rst_n      (ddr3_rst_n),
-    .ddr3_cke        (ddr3_cke),
-    .ddr3_cs_n       (ddr3_cs_n),
-    .ddr3_ras_n      (ddr3_ras_n),
-    .ddr3_cas_n      (ddr3_cas_n),
-    .ddr3_we_n       (ddr3_we_n),
-    .ddr3_odt        (ddr3_odt),
-    .ddr3_ba         (ddr3_ba),
-    .ddr3_addr       (ddr3_addr),
-    .ddr3_dm         (ddr3_dm),
-    .ddr3_dqs_p      (ddr3_dqs_p),
-    .ddr3_dqs_n      (ddr3_dqs_n),
-    .ddr3_dq         (ddr3_dq),
+    .ddr3_ck_p       (u_ddr3_if.ck_p  ),
+    .ddr3_ck_n       (u_ddr3_if.ck_n  ),
+    .ddr3_rst_n      (u_ddr3_if.rst_n ),
+    .ddr3_cke        (u_ddr3_if.cke   ),
+    .ddr3_cs_n       (u_ddr3_if.cs_n  ),
+    .ddr3_ras_n      (u_ddr3_if.ras_n ),
+    .ddr3_cas_n      (u_ddr3_if.cas_n ),
+    .ddr3_we_n       (u_ddr3_if.we_n  ),
+    .ddr3_odt        (u_ddr3_if.odt   ),
+    .ddr3_ba         (u_ddr3_if.ba    ),
+    .ddr3_addr       (u_ddr3_if.addr  ),
+    .ddr3_dm         (u_ddr3_if.dm    ),
+    .ddr3_dqs_p      (u_ddr3_if.dqs_p ),
+    .ddr3_dqs_n      (u_ddr3_if.dqs_n ),
+    .ddr3_dq         (u_ddr3_if.dq    ),
 
     // Initialization Control & Status
     .init_do         (u_cnfg_if.init_do),
@@ -133,26 +125,52 @@ module ddr3_controller_uvm_tb;
     .DRAM_ADDR_BITS  (DRAM_ADDR_BITS),
     .DRAM_BA_BITS    (DRAM_BA_BITS)
   ) u_chip_array (
-    .ddr3_ck_p       (ddr3_ck_p),
-    .ddr3_ck_n       (ddr3_ck_n),
-    .ddr3_rst_n      (ddr3_rst_n),
-    .ddr3_cke        (ddr3_cke),
-    .ddr3_cs_n       (ddr3_cs_n),
-    .ddr3_ras_n      (ddr3_ras_n),
-    .ddr3_cas_n      (ddr3_cas_n),
-    .ddr3_we_n       (ddr3_we_n),
-    .ddr3_odt        (ddr3_odt),
-    .ddr3_ba         (ddr3_ba),
-    .ddr3_addr       (ddr3_addr),
-    .ddr3_dm         (ddr3_dm),
-    .ddr3_dqs_p      (ddr3_dqs_p),
-    .ddr3_dqs_n      (ddr3_dqs_n),
-    .ddr3_dq         (ddr3_dq)
+    .ddr3_ck_p       (u_ddr3_if.ck_p  ),
+    .ddr3_ck_n       (u_ddr3_if.ck_n  ),
+    .ddr3_rst_n      (u_ddr3_if.rst_n ),
+    .ddr3_cke        (u_ddr3_if.cke   ),
+    .ddr3_cs_n       (u_ddr3_if.cs_n  ),
+    .ddr3_ras_n      (u_ddr3_if.ras_n ),
+    .ddr3_cas_n      (u_ddr3_if.cas_n ),
+    .ddr3_we_n       (u_ddr3_if.we_n  ),
+    .ddr3_odt        (u_ddr3_if.odt   ),
+    .ddr3_ba         (u_ddr3_if.ba    ),
+    .ddr3_addr       (u_ddr3_if.addr  ),
+    .ddr3_dm         (u_ddr3_if.dm    ),
+    .ddr3_dqs_p      (u_ddr3_if.dqs_p ),
+    .ddr3_dqs_n      (u_ddr3_if.dqs_n ),
+    .ddr3_dq         (u_ddr3_if.dq    )
   );
 
-  // -------------------------------------------------------------------------
-  // Simulation Initial Block (Clocks, Reset & Config Execution)
-  // -------------------------------------------------------------------------
+  always_comb begin
+    if (u_ctrl_if.arst_n === 1'b0) begin
+      u_ddr3_if.current_fsm_state = "RESET";
+    end else begin
+      case (u_dut.state)
+        u_dut.ST_RESET_LOW         : u_ddr3_if.current_fsm_state = "RESET_LOW";
+        u_dut.ST_RESET_HIGH        : u_ddr3_if.current_fsm_state = "RESET_HIGH";
+        u_dut.ST_CKE_HIGH          : u_ddr3_if.current_fsm_state = "CKE_HIGH";
+        u_dut.ST_LOAD_MR2          : u_ddr3_if.current_fsm_state = "LOAD_MR2";
+        u_dut.ST_LOAD_MR3          : u_ddr3_if.current_fsm_state = "LOAD_MR3";
+        u_dut.ST_LOAD_MR1          : u_ddr3_if.current_fsm_state = "LOAD_MR1";
+        u_dut.ST_LOAD_MR0          : u_ddr3_if.current_fsm_state = "LOAD_MR0";
+        u_dut.ST_ZQCL              : u_ddr3_if.current_fsm_state = "ZQCL";
+        u_dut.ST_DLL_WAIT          : u_ddr3_if.current_fsm_state = "DLL_WAIT";
+        u_dut.ST_IDLE              : u_ddr3_if.current_fsm_state = "IDLE";
+        u_dut.ST_REFRESH           : u_ddr3_if.current_fsm_state = "REFRESH";
+        u_dut.ST_WR_ACT            : u_ddr3_if.current_fsm_state = "WR_ACT";
+        u_dut.ST_WR_ACT_WAIT       : u_ddr3_if.current_fsm_state = "WR_ACT_WAIT";
+        u_dut.ST_WR_CMD            : u_ddr3_if.current_fsm_state = "WR_CMD";
+        u_dut.ST_WR_PRECHARGE_WAIT : u_ddr3_if.current_fsm_state = "WR_PRE_WAIT";
+        u_dut.ST_RD_ACT            : u_ddr3_if.current_fsm_state = "RD_ACT";
+        u_dut.ST_RD_ACT_WAIT       : u_ddr3_if.current_fsm_state = "RD_ACT_WAIT";
+        u_dut.ST_RD_CMD            : u_ddr3_if.current_fsm_state = "RD_CMD";
+        u_dut.ST_RD_PRECHARGE_WAIT : u_ddr3_if.current_fsm_state = "RD_PRE_WAIT";
+        default                    : u_ddr3_if.current_fsm_state = "UNKNOWN";
+      endcase
+    end
+  end
+
   initial begin
     string test_name;
 
@@ -175,6 +193,15 @@ module ddr3_controller_uvm_tb;
       .BE_WIDTH   (DATA_WIDTH / 8),
       .BURST_LEN  (BURST_LEN)
     ))::set(null, "*", "host_vif", u_host_if);
+    
+    uvm_config_db #(virtual ddr3_if #(
+      .DRAM_BA_BITS   (DRAM_BA_BITS  ),  
+      .DRAM_ADDR_BITS (DRAM_ADDR_BITS),   
+      .DM_WIDTH       (DM_WIDTH      ),  
+      .DQS_WIDTH      (DQS_WIDTH     ),  
+      .DATA_WIDTH     (DATA_WIDTH    )    
+    ))::set(null, "*", "ddr3_vif", u_ddr3_if);
+
     // 4. Run UVM Test
     run_test(test_name);
   end

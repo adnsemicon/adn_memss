@@ -60,6 +60,13 @@ class host_driver extends uvm_driver #(host_seq_item);
 
       case (item.tr_type)
         1'b1: begin
+          // Only stall/backpressure if the sequence explicitly requested it for this transaction
+        while (host_vif.wa_ready === 1'b0) begin
+            @(posedge host_vif.clk);
+          end
+          while (host_vif.wd_ready === 1'b0) begin
+            @(posedge host_vif.clk);
+          end
           host_vif.write(item.addr, item.data, item.be);
         end
 

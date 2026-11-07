@@ -1,6 +1,7 @@
 ${ADN_MEMSS}/assertion/dummy_checker.sv
 ${ADN_MEMSS}/interface/cnfg_if.sv
 ${ADN_MEMSS}/interface/ctrl_if.sv
+${ADN_MEMSS}/interface/ddr3_if.sv
 ${ADN_MEMSS}/interface/dummy_interface.sv
 ${ADN_MEMSS}/interface/host_if.sv
 ${ADN_MEMSS}/package/ddr3_params_pkg.sv
