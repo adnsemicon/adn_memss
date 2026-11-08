@@ -45,6 +45,7 @@
 ## INTERFACE
 [`dummy_interface`](document/interface/dummy_interface.md)
 
+[`adn_common_clock_reset_if`](https://github.com/adnsemicon/adn_common/blob/main/document/interface/adn_common_clock_reset_if.md)
 [`adn_common_pmi_if`](https://github.com/adnsemicon/adn_common/blob/main/document/interface/adn_common_pmi_if.md)
 
 ## INCLUDE
