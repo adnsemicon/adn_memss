@@ -15,6 +15,8 @@ See LICENSE file in the project root for full license information
 
 */
 
+`include "micron_ddr3_msg.svh"
+
 module adn_memss_ddr3_chip_array #(
     parameter  int DATA_WIDTH      = 64,
     parameter  int DRAM_CHIP_WIDTH = 16,                            // 16 for x16, 8 for x8
@@ -43,7 +45,7 @@ module adn_memss_ddr3_chip_array #(
     inout wire  [    DATA_WIDTH-1:0] ddr3_dq
 );
 
-  `include "micron_ddr3_msg.sv"
+  import micron_ddr3_msg_pkg::msg_t;
 
   `DDR3_MSG_MBX_DECLARE
 
@@ -77,7 +79,6 @@ module adn_memss_ddr3_chip_array #(
 
       initial begin
         #1step;
-        `DDR3_MSG_MBX_NEW
         `DDR3_MSG_MBX_CONNECT(u_ddr3_chip)
       end
 

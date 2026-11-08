@@ -174,7 +174,7 @@ compile_this_module:
 # Elaborate
 $(BUILD_DIR)/xelab_$(TOP):
 	@echo -e "\033[1;33m#\033[0m Elaborating $(TOP)"
-	@cd $(BUILD_DIR) && $(XELAB) $(TOP) -s snap_$(TOP) -debug all -log $(LOG_DIR)/xelab_$(TOP)_$(shell date +%Y%m%d_%H%M%S).log $(O_EW)
+	@cd $(BUILD_DIR) && $(XELAB) $(TOP) -s snap_$(TOP) -timescale 1ps/1ps -debug all -log $(LOG_DIR)/xelab_$(TOP)_$(shell date +%Y%m%d_%H%M%S).log $(O_EW)
 	@if [ $$? -ne 0 ]; then \
 		echo -e "\033[1;31m#\033[0m Elaboration failed, check log file $(LOG_DIR)/xelab_$(TOP)_$(shell date +%Y%m%d_%H%M%S).log"; \
 		exit 1; \
