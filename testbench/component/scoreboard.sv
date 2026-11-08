@@ -20,10 +20,17 @@ class host_scoreboard extends uvm_scoreboard;
   int unsigned num_reads       = 0;
   int unsigned num_matches     = 0;
   int unsigned num_mismatches  = 0;
+  bit          expect_reads    = 1'b1;
 
   function new(string name = "host_scoreboard", uvm_component parent = null);
     super.new(name, parent);
     ap_imp = new("ap_imp", this);
+  endfunction
+
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+    if (!uvm_config_db#(bit)::get(this, "", "expect_reads", expect_reads))
+      expect_reads = 1'b1;
   endfunction
 
   // Automatically triggered when host_monitor calls ap.write(item)
@@ -121,7 +128,7 @@ class host_scoreboard extends uvm_scoreboard;
 
     if (num_mismatches > 0)
       `uvm_error("SCB_FAIL", $sformatf("%0d read mismatches", num_mismatches))
-    if (num_reads == 0)
+    if (expect_reads && num_reads == 0)
       `uvm_error("SCB_EMPTY", "No reads checked, test passed vacuously")
   endfunction
 

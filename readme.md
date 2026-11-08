@@ -45,6 +45,7 @@
 ## INTERFACE
 [`cnfg_if`](document/interface/cnfg_if.md)
 [`ctrl_if`](document/interface/ctrl_if.md)
+[`ddr3_if`](document/interface/ddr3_if.md)
 [`dummy_interface`](document/interface/dummy_interface.md)
 [`host_if`](document/interface/host_if.md)
 
