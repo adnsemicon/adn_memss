@@ -6,7 +6,7 @@ class random_stress_seq extends uvm_sequence #(host_seq_item);
 
   rand int num_transactions;
   constraint c_num_txns { 
-      num_transactions inside {[1000:2000]}; 
+      num_transactions inside {[10000:20000]}; 
     }
 
   function new(string name = "random_stress_seq");

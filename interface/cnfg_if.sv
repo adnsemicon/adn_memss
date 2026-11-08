@@ -96,11 +96,8 @@ task automatic apply_cfg(
     tREFI   <= in_tREFI;
     init_do <= 1'b0;
 
-    // 2. Wait until asynchronous reset is released
     wait (arst_n === 1'b1);
     @(posedge clk);
-
-    // 3. Only pulse init_do if controller was ALREADY initialized (for on-the-fly re-init)
 
     if (init_done === 1'b1) begin
       init_do <= 1'b1;
@@ -108,37 +105,44 @@ task automatic apply_cfg(
       init_do <= 1'b0;
       wait (init_done === 1'b0);
     end
-
-    // 4. Wait for controller to complete JEDEC initialization sequence
     do begin
       @(posedge clk);
     end while (init_done !== 1'b1);
     @(posedge clk);
   endtask
 
-  // Task 3: Shorten tREFI dynamically for Refresh Collision Test
   task automatic set_fast_refresh(input logic [15:0] fast_tREFI = 16'd200);
     @(posedge clk);
     tREFI <= fast_tREFI;
   endtask
 
-  // Task 4: On-The-Fly Timing Update (Mid-traffic without pulsing init_do)
   task automatic update_timings_on_the_fly(
-    input logic [15:0] new_tRCD,
-    input logic [15:0] new_tRP,
-    input logic [15:0] new_tRAS,
-    input logic [15:0] new_tRC,
-    input logic [15:0] new_tREFI
+    input logic [15:0]               in_tRCD  = 16'd4, 
+    input logic [15:0]               in_tRP   = 16'd4, 
+    input logic [15:0]               in_tRAS  = 16'd8, 
+    input logic [15:0]               in_tRC   = 16'd12,
+    input logic [15:0]               in_tWR   = 16'd4, 
+    input logic [15:0]               in_tRTP  = 16'd4, 
+    input logic [15:0]               in_tWTR  = 16'd4, 
+    input logic [15:0]               in_tRRD  = 16'd4, 
+    input logic [15:0]               in_tFAW  = 16'd10,
+    input logic [15:0]               in_tRFC  = 16'd28,
+    input logic [15:0]               in_tREFI = 16'd780
   );
     @(posedge clk);
-    tRCD  <= new_tRCD;
-    tRP   <= new_tRP;
-    tRAS  <= new_tRAS;
-    tRC   <= new_tRC;
-    tREFI <= new_tREFI;
+    tRCD    <= in_tRCD;
+    tRP     <= in_tRP;
+    tRAS    <= in_tRAS;
+    tRC     <= in_tRC;
+    tWR     <= in_tWR;
+    tRTP    <= in_tRTP;
+    tWTR    <= in_tWTR;
+    tRRD    <= in_tRRD;
+    tFAW    <= in_tFAW;
+    tRFC    <= in_tRFC;
+    tREFI   <= in_tREFI;
   endtask
 
-  // Task 5: Live Re-Initialization (Update Mode Registers & pulse init_do mid-traffic)
   task automatic trigger_reinit(
     input logic [DRAM_ADDR_BITS-1:0] new_mr0,
     input logic [DRAM_ADDR_BITS-1:0] new_mr2

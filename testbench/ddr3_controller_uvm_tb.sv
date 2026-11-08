@@ -1,6 +1,8 @@
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 import ddr3_params_pkg::*;
+import micron_ddr3_msg_pkg::msg_t;
+
 `include "test/single_wr_rd_test.sv"
 `include "test/byte_enable_masking_test.sv"
 `include "test/back_to_back_burst_test.sv"
@@ -9,6 +11,7 @@ import ddr3_params_pkg::*;
 `include "test/random_stress_test.sv"
 `include "test/refresh_collision_test.sv"
 `include "test/check_initialization.sv"
+`include "test/on_the_fly_reconfig_test.sv"
 
 
 module ddr3_controller_uvm_tb;
@@ -179,7 +182,6 @@ module ddr3_controller_uvm_tb;
       test_name = "base_test"; 
     end
 
-
     // 1. Store Virtual Interfaces into UVM Config DB
     $timeformat(-9, 0, "ns");
     $dumpfile("ddr3_controller_uvm_tb.vcd");
@@ -203,7 +205,17 @@ module ddr3_controller_uvm_tb;
       .DATA_WIDTH     (DATA_WIDTH    )    
     ))::set(null, "*", "ddr3_vif", u_ddr3_if);
 
-    // 4. Run UVM Test
+    // 2. Pass Micron DDR3 Model Mailboxes to Scoreboard after u_chip_array initializes them at time 0
+    fork
+      begin
+        #1step;
+        uvm_config_db #(mailbox #(msg_t))::set(null, "*", "dram_info_mbx",    u_chip_array.info_mbx);
+        uvm_config_db #(mailbox #(msg_t))::set(null, "*", "dram_warning_mbx", u_chip_array.warning_mbx);
+        uvm_config_db #(mailbox #(msg_t))::set(null, "*", "dram_error_mbx",   u_chip_array.error_mbx);
+      end
+    join_none
+
+    // 3. Run UVM Test (Must be called at time 0ns)
     run_test(test_name);
   end
 endmodule
