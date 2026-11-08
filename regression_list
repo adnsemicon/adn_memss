@@ -1,2 +1,1 @@
-ci_simulate dummy_tb default 0
-ci_simulate ddr3_controller_uvm_tb read_back_pressure_test 0
+ci_simulate adn_memss_ddr3_controller_tb default 0
