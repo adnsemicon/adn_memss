@@ -6,17 +6,15 @@ import micron_ddr3_msg_pkg::msg_t;
 class host_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(host_scoreboard)
 
-  // ANSI Color Codes for Terminal Output
   string GREEN  = "\033[32m";
   string RED    = "\033[31m";
   string YELLOW = "\033[33m";
   string CYAN   = "\033[36m";
   string RESET  = "\033[0m";
 
-  // Analysis implementation port to receive transactions from host_monitor
   uvm_analysis_imp #(host_seq_item, host_scoreboard) ap_imp;
 
-  // Micron DDR3 Model Mailboxes
+
   mailbox #(msg_t) dram_info_mbx;
   mailbox #(msg_t) dram_warning_mbx;
   mailbox #(msg_t) dram_error_mbx;
@@ -24,7 +22,6 @@ class host_scoreboard extends uvm_scoreboard;
   // Golden sparse memory model indexed by byte address
   logic [7:0] mem_model [logic [ADDR_WIDTH-1:0]];
 
-  // Verification statistics counters
   int unsigned num_writes      = 0;
   int unsigned num_reads       = 0;
   int unsigned num_matches     = 0;
@@ -44,7 +41,6 @@ class host_scoreboard extends uvm_scoreboard;
       expect_reads = 1'b1;
   endfunction
 
-  // Monitor Micron DDR3 Model Mailboxes in background threads
   virtual task run_phase(uvm_phase phase);
     super.run_phase(phase);
         #1step;
@@ -86,7 +82,7 @@ class host_scoreboard extends uvm_scoreboard;
         join_none
   endtask
 
-  // Automatically triggered when host_monitor calls ap.write(item)
+
   virtual function void write(host_seq_item item);
     case (item.tr_type)
       1'b1: process_write(item);

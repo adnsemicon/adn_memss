@@ -22,7 +22,7 @@ interface ctrl_if;
   // Sequentials
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // 1. System Clock (clk) Internal Oscillator
+
   always begin
     realtime tp_local;
     tp_local = tp;
@@ -32,7 +32,7 @@ interface ctrl_if;
     internal_clk <= 1'b0;
   end
 
-  // Glitch-free gating for System Clock (clk stays 0 until clk_en = 1)
+
   always begin
     @(posedge internal_clk);
     clk <= clk_en;
@@ -62,12 +62,12 @@ interface ctrl_if;
     clk_en = en;
   endfunction
 
-  // Dynamically change System Clock frequency on-the-fly
+
   function void set_clk_freq(input real freq);
     tp = 1s / freq;
   endfunction
 
-  // Start System Clock (Call after reset in configure_phase)
+ 
   task automatic start_clock(input real freq = 1_538_461_538.0);
     tp = 1s / freq;
     set_clk_en(1'b1);
@@ -86,7 +86,6 @@ interface ctrl_if;
     #(post_delay);
   endtask
 
-  // Wait Helper Tasks
   task automatic wait_clks(input int n = 1);
     repeat (n) @(posedge clk);
   endtask

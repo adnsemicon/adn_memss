@@ -33,11 +33,6 @@ interface host_if #(
   logic                  rd_ready;
 
 
-  // =========================================================================
-  // 2. DRIVER TASKS (Called by host_driver)
-  // =========================================================================
-
-  // Reset all host-driven signals
   task automatic reset_signals();
     wa_valid <= 1'b0;
     wa_addr  <= '0;
@@ -49,10 +44,8 @@ interface host_if #(
     rd_ready <= 1'b1;
   endtask
 
-  // Drive Write Address (wa)
   task automatic drive_wa(input logic [ADDR_WIDTH-1:0] addr, input int delay = 0);
     repeat (delay) @(posedge clk);
-    //@(posedge clk);
     wa_addr  <= addr;
     wa_valid <= 1'b1;
     do begin
@@ -80,7 +73,7 @@ interface host_if #(
     wd_valid <= 1'b0;
   endtask
 
-  // Combined Full Write Task (Runs wa and wd concurrently)
+  // Combined Full Write Task
   task automatic write(
     input logic [ADDR_WIDTH-1:0] addr,
     input logic [DATA_WIDTH-1:0] data [BURST_LEN],
