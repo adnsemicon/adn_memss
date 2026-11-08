@@ -77,7 +77,6 @@ module adn_memss_ddr3_chip_array #(
 
       initial begin
         #1step;
-        `DDR3_MSG_MBX_NEW
         `DDR3_MSG_MBX_CONNECT(u_ddr3_chip)
       end
 
