@@ -26,6 +26,8 @@ class base_test extends uvm_test;
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+    if (get_type_name() == "base_test")
+      uvm_config_db#(bit)::set(this, "env.scb", "expect_reads", 1'b0);
     env = environment::type_id::create("env", this);
   endfunction
 
