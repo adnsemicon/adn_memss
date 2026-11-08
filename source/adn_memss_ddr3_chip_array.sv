@@ -43,6 +43,12 @@ module adn_memss_ddr3_chip_array #(
     inout wire  [    DATA_WIDTH-1:0] ddr3_dq
 );
 
+  `include "micron_ddr3_msg.sv"
+
+  `DDR3_MSG_MBX_DECLARE
+
+  `DDR3_MSG_MBX_INI_NEW
+
   genvar i;
   generate
     for (i = 0; i < NUM_CHIPS; i = i + 1) begin : gen_ddr3_chips
@@ -68,6 +74,13 @@ module adn_memss_ddr3_chip_array #(
           .tdqs_n (),
           .odt    (ddr3_odt)
       );
+
+      initial begin
+        #1step;
+        `DDR3_MSG_MBX_NEW
+        `DDR3_MSG_MBX_CONNECT(u_ddr3_chip)
+      end
+
     end
   endgenerate
 
