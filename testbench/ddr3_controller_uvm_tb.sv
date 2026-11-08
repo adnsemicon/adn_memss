@@ -8,6 +8,7 @@ import ddr3_params_pkg::*;
 //`include "test/write_back_pressure_test.sv"
 `include "test/random_stress_test.sv"
 `include "test/refresh_collision_test.sv"
+`include "test/check_initialization.sv"
 
 
 module ddr3_controller_uvm_tb;
