@@ -12,6 +12,7 @@ import micron_ddr3_msg_pkg::msg_t;
 `include "test/refresh_collision_test.sv"
 `include "test/check_initialization.sv"
 `include "test/on_the_fly_reconfig_test.sv"
+`include "test/reinitialization_test.sv"
 
 
 module ddr3_controller_uvm_tb;

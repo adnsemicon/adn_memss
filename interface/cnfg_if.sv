@@ -61,7 +61,7 @@ interface cnfg_if #(
 
 
 task automatic apply_cfg(
-    input logic [DRAM_ADDR_BITS-1:0] in_mr0   = 'h0D70, // BL8, CL=6, WR=6, DLL Reset
+    input logic [DRAM_ADDR_BITS-1:0] in_mr0   = 'h0D70, // WR=12, CL=11, BL=8, DLL Reset=1
     input logic [DRAM_ADDR_BITS-1:0] in_mr1   = 'h0010, // DLL Enable
     input logic [DRAM_ADDR_BITS-1:0] in_mr2   = 'h0000, // CWL=5
     input logic [DRAM_ADDR_BITS-1:0] in_mr3   = 'h0000, // MPR=0
@@ -98,13 +98,6 @@ task automatic apply_cfg(
 
     wait (arst_n === 1'b1);
     @(posedge clk);
-
-    if (init_done === 1'b1) begin
-      init_do <= 1'b1;
-      @(posedge clk);
-      init_do <= 1'b0;
-      wait (init_done === 1'b0);
-    end
     do begin
       @(posedge clk);
     end while (init_done !== 1'b1);
