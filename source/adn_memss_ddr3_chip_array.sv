@@ -57,7 +57,7 @@ module adn_memss_ddr3_chip_array #(
       ddr3 #(
           .check_strict_timing(0),
           .PERTCKAVG          (12),
-          .DEBUG              (0)
+          .DEBUG              (1)
       ) u_ddr3_chip (
           .rst_n  (ddr3_rst_n),
           .ck     (ddr3_ck_p),
