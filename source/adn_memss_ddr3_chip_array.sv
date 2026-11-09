@@ -15,7 +15,7 @@ See LICENSE file in the project root for full license information
 
 */
 
-`timescale 1ps / 1ps
+`include "micron_ddr3_msg.svh"
 
 module adn_memss_ddr3_chip_array #(
     parameter  int DATA_WIDTH      = 64,
@@ -45,13 +45,19 @@ module adn_memss_ddr3_chip_array #(
     inout wire  [    DATA_WIDTH-1:0] ddr3_dq
 );
 
+  import micron_ddr3_msg_pkg::msg_t;
+
+  `DDR3_MSG_MBX_DECLARE
+
+  `DDR3_MSG_MBX_INI_NEW
+
   genvar i;
   generate
     for (i = 0; i < NUM_CHIPS; i = i + 1) begin : gen_ddr3_chips
       ddr3 #(
           .check_strict_timing(0),
           .PERTCKAVG          (12),
-          .DEBUG              (0)
+          .DEBUG              (1)
       ) u_ddr3_chip (
           .rst_n  (ddr3_rst_n),
           .ck     (ddr3_ck_p),
@@ -70,6 +76,12 @@ module adn_memss_ddr3_chip_array #(
           .tdqs_n (),
           .odt    (ddr3_odt)
       );
+
+      initial begin
+        #1step;
+        `DDR3_MSG_MBX_CONNECT(u_ddr3_chip)
+      end
+
     end
   endgenerate
 
