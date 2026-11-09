@@ -286,8 +286,8 @@ clean_all_docs:
 	@rm -rf $(REPO_ROOT)/document/include
 	@rm -rf $(REPO_ROOT)/document/interface
 	@rm -rf $(REPO_ROOT)/document/assertion
-	@rm -f $(REPO_ROOT)/document/source/*.md
-	@rm -f $(REPO_ROOT)/document/source/*_top.svg
+	@find $(REPO_ROOT)/document/source -maxdepth 1 -type f -name "*.md" ! -name "adn_memss_ddr3_controller_uvm_tb.md" -delete
+	@find $(REPO_ROOT)/document/source -maxdepth 1 -type f -name "*_top.svg" ! -name "adn_memss_ddr3_controller_uvm_tb_top.svg" -delete
 
 .PHONY: get_source_doc_header
 get_source_doc_header:
