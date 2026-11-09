@@ -7,7 +7,6 @@ import micron_ddr3_msg_pkg::msg_t;
 `include "test/byte_enable_masking_test.sv"
 `include "test/back_to_back_burst_test.sv"
 `include "test/read_back_pressure_test.sv"
-//`include "test/write_back_pressure_test.sv"
 `include "test/random_stress_test.sv"
 `include "test/refresh_collision_test.sv"
 `include "test/check_initialization.sv"
