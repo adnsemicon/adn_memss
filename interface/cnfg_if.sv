@@ -5,6 +5,18 @@ interface cnfg_if #(
   input logic arst_n
 );
 
+  `ifdef den1024Mb
+    `include "1024Mb_ddr3_parameters.vh"
+  `elsif den2048Mb
+    `include "2048Mb_ddr3_parameters.vh"
+  `elsif den4096Mb
+    `include "4096Mb_ddr3_parameters.vh"
+  `elsif den8192Mb
+    `include "8192Mb_ddr3_parameters.vh"
+  `else
+    `include "1024Mb_ddr3_parameters.vh"
+  `endif
+
   // -------------------------------------------------------------------------
   // 1. Initialization Handshake Signals
   // -------------------------------------------------------------------------
