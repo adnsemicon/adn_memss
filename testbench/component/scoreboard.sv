@@ -76,7 +76,7 @@ class host_scoreboard extends uvm_scoreboard;
             msg_t info_msg;
             dram_info_mbx.get(info_msg);
             if (uvm_is_match("*gen_ddr3_chips[0]*", info_msg.msg_body)) begin
-              // $display("%s[DRAM_INFO] @ %0t: %s%s", CYAN, info_msg.msg_time, info_msg.msg_body, RESET);
+              $display("%s[DRAM_INFO] @ %0t: %s%s", CYAN, info_msg.msg_time, info_msg.msg_body, RESET);
             end
           end
         join_none

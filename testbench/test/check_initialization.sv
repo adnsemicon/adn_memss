@@ -2,7 +2,7 @@
 `define __GUARD_CHECK_INITIALIZATION_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/check_initialization_seq.sv"
+`include "sequence/check_initialization_seq.sv"
 
 class check_initialization extends base_test;
   `uvm_component_utils(check_initialization)

@@ -2,7 +2,7 @@
 `define __GUARD_RANDOM_STRESS_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/random_stress_seq.sv"
+`include "sequence/random_stress_seq.sv"
 
 class random_stress_test extends base_test;
   `uvm_component_utils(random_stress_test)

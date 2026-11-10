@@ -40,18 +40,18 @@ interface ctrl_if;
     clk <= 1'b0;
   end
 
-  // 2. Real-Time Clock (rtc) Generator — Free-running right from 0ns!
-  initial begin
-    rtc = 1'b0;
-    forever begin
-      realtime rtc_tp_local;
-      rtc_tp_local = rtc_tp;
-      #(rtc_tp_local / 2.0);
-      rtc <= 1'b1;
-      #(rtc_tp_local / 2.0);
-      rtc <= 1'b0;
-    end
-  end
+  // // 2. Real-Time Clock (rtc) Generator — Free-running right from 0ns!
+  // initial begin
+  //   rtc = 1'b0;
+  //   forever begin
+  //     realtime rtc_tp_local;
+  //     rtc_tp_local = rtc_tp;
+  //     #(rtc_tp_local / 2.0);
+  //     rtc <= 1'b1;
+  //     #(rtc_tp_local / 2.0);
+  //     rtc <= 1'b0;
+  //   end
+  // end
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // Methods

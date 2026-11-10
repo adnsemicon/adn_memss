@@ -12,6 +12,7 @@ class base_test extends uvm_test;
   endfunction
 
   environment env;
+  realtime rtc_tp;
 
   virtual ctrl_if ctrl_vif;
   virtual cnfg_if #(
@@ -52,6 +53,10 @@ class base_test extends uvm_test;
     ))::get(this, "", "host_vif", host_vif)) begin
       `uvm_fatal("NOVIF", "host_vif was not found in uvm_config_db")
     end
+
+    if(!uvm_config_db #(realtime)::get(this, "", "rtc_tp", rtc_tp)) begin
+      `uvm_fatal("NO RTC_TP", "rtc_tp was not found in uvm_config_db")
+    end
   endfunction
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
@@ -72,7 +77,7 @@ class base_test extends uvm_test;
     super.configure_phase(phase);
     phase.raise_objection(this);
     ctrl_vif.start_clock();
-    cnfg_vif.apply_cfg();
+    cnfg_vif.apply_cfg(.rtc_tp(rtc_tp));
     phase.drop_objection(this);
   endtask
 
