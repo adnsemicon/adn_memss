@@ -104,6 +104,7 @@ interface host_if #(
     if (rd_ready === 1'b0) return;
     @(posedge clk);
     rd_ready <= '0;
+    wait (rd_valid === 1'b1);
     repeat (delay) @(posedge clk);
     rd_ready <= '1;
   endtask

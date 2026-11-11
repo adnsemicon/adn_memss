@@ -21,6 +21,7 @@ class reinitialization_test extends base_test;
     `uvm_info("REINIT_TEST","Running traffic with initial configuration ===", UVM_LOW)
     seq_phase1 = host_single_wr_rd_seq::type_id::create("seq_phase1");
     seq_phase1.start(env.agt.sqr);
+    env.agt.mon.wait_for_idle();
 
     `uvm_info("REINIT_TEST","Updating timings and triggering full re-initialization ===", UVM_LOW)
     cnfg_if.update_timings_on_the_fly(

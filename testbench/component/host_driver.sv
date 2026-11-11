@@ -60,8 +60,7 @@ class host_driver extends uvm_driver #(host_seq_item);
 
       case (item.tr_type)
         1'b1: begin
-          // Only stall/backpressure if the sequence explicitly requested it for this transaction
-        while (host_vif.wa_ready === 1'b0) begin
+          while (host_vif.wa_ready === 1'b0) begin
             @(posedge host_vif.clk);
           end
           while (host_vif.wd_ready === 1'b0) begin
@@ -73,7 +72,7 @@ class host_driver extends uvm_driver #(host_seq_item);
         1'b0: begin
           if (item.rd_back_pressure) begin
             fork
-              host_vif.set_rd_backpressure(80); // 80 cycles is plenty for 4 DRAM reads
+              host_vif.set_rd_backpressure(500);
             join_none
           end
           host_vif.read_req(item.addr);

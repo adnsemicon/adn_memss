@@ -119,7 +119,7 @@ task automatic apply_cfg(
   endtask
 
   task automatic update_timings_on_the_fly(
-      input realtime rtc_tp       = 10ns,
+      input realtime rtc_tp   = 10ns,
       input int  margin_ticks = 2, // Default 2 tick bariye test korbe
       input int  custom_tREFI = 780
     );
@@ -150,7 +150,7 @@ task automatic apply_cfg(
     mr2     <= new_mr2;
     mr3     <= new_mr3;
     init_do <= 1'b1;
-    @(posedge clk);
+    wait(init_done == 0);
     init_do <= 1'b0;
 
     do begin

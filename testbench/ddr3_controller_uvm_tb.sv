@@ -10,7 +10,7 @@ import micron_ddr3_msg_pkg::msg_t;
 `include "test/random_stress_test.sv"
 `include "test/refresh_collision_test.sv"
 `include "test/check_initialization.sv"
-`include "test/on_the_fly_reconfig_test.sv"
+`include "test/shadow_reg_protection_test.sv"
 `include "test/reinitialization_test.sv"
 `include "test/reset_test.sv"
 

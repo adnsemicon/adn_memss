@@ -13,7 +13,7 @@ class read_back_pressure_test extends base_test;
 
   virtual task main_phase(uvm_phase phase);
     read_back_pressure_seq seq;
-    uvm_config_db#(int)::set(uvm_root::get(), "parameter", "seq_length", 4);
+    uvm_config_db#(int)::set(uvm_root::get(), "parameter", "seq_length", 6);
 
     super.main_phase(phase);
     phase.raise_objection(this);
