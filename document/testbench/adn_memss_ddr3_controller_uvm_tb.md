@@ -186,17 +186,30 @@ The planned environment uses an active host agent, a configuration driver, a sco
 
 **Expected result:** The controller handles randomized traffic with frequent refresh requests without data mismatches or DDR3 model errors.
 
-### 2.9 On-the-Fly Reconfiguration Test
+### 2.9 Shadow Register Protection Test (`shadow_reg_protection_test`)
 
-**Objective:** Verify host traffic before and after updating timing parameters during simulation.
+**Objective:** Verify that the controller's internal shadow registers (`active_*`) ignore unlatched timing parameter changes during runtime when `init_do` is not asserted.
 
 | Step | Action | Check |
 |---|---|---|
-| 1 | Run a write/read sequence using the default configuration. | The read data matches the write data. |
-| 2 | Update timing parameters, including `tRCD`, `tRP`, `tRAS`, `tRC`, `tWR`, `tRTP`, `tWTR`, `tRRD`, `tFAW`, `tRFC`, and `tREFI`. | The new timing values are applied. |
-| 3 | Run another write/read sequence after the timing update. | The post-reconfiguration read data matches the write data. |
-| 4 | Wait for host transactions to finish. | No transactions remain pending. |
+| 1 | Run a baseline write/read sequence at address `0x00000000` using the default configuration and wait for the host monitor to reach idle. | The read data matches the write data and all bus activity completes. |
+| 2 | Drive modified/invalid timing parameters (`margin_ticks = -10` across `tRCD`, `tRP`, `tRAS`, `tRC`, `tWR`, `tRTP`, `tWTR`, `tRRD`, `tFAW`, `tRFC`, and `tREFI`) on the configuration ports without asserting `init_do`. | `init_done` remains high (`1`) and no MRS re-initialization commands are issued on the DDR3 bus. |
+| 3 | Run another write/read sequence at address `0x00000000`. | The controller continues operating with the previously latched `active_*` timings; post-update read data matches the write data with zero Micron model timing violations. |
+| 4 | Wait for the host monitor to finish processing transactions. | No write or read transactions remain pending. |
 
-**Expected result:** The controller completes traffic before and after the timing update without read mismatches or DDR3 model errors.
- 
+**Expected result:** The controller ignores unlatched configuration changes when `init_do` is low, preserving active timing parameters and completing all transactions without scoreboard mismatches or DDR3 model errors.
+
+### 2.10 Re-initialization Test (`reinitialization_test`)
+
+**Objective:** Verify that the controller safely latches updated timing parameters and Mode Register settings via a full `init_do` / `init_done` handshake and resumes host traffic after re-initialization.
+
+| Step | Action | Check |
+|---|---|---|
+| 1 | Run a baseline write/read sequence at address `0x00000000` with the initial configuration and wait for the host monitor to reach idle. | The read data matches the write data and the controller returns to idle. |
+| 2 | Update timing parameters (`margin_ticks` added to core timings) and new Mode Register values (e.g., `MR0 = 0x1D78`), then assert `init_do` and hold it high until `init_done` clears to `0`. | The controller acknowledges the request by driving `init_done` low (`0`) and latches the new configuration into its `active_*` registers. |
+| 3 | De-assert `init_do` and wait for the controller to complete the re-initialization sequence (`init_done == 1`). | The controller executes the full boot sequence (`CKE_HIGH`, `MR2`, `MR3`, `MR1`, `MR0`, `ZQCL`, and `DLL_WAIT`) using the updated register and timing values. |
+| 4 | Run a post-reinitialization write/read sequence at address `0x00000000` and wait for the host monitor to finish processing transactions. | Traffic executes under the newly latched timing intervals, read data matches the written data, and no transactions remain pending. |
+
+**Expected result:** The controller completes the full re-initialization handshake, applies the updated Mode Register and timing parameters, and processes subsequent read/write traffic without scoreboard mismatches or DDR3 model errors.
+
 ---

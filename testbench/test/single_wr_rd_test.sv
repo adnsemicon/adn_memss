@@ -2,7 +2,7 @@
 `define __GUARD_DDR3_SINGLE_WR_RD_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/host_single_wr_rd_seq.sv"
+`include "sequence/host_single_wr_rd_seq.sv"
 
 class single_wr_rd_test extends base_test;
   `uvm_component_utils(single_wr_rd_test)

@@ -5,6 +5,21 @@ interface cnfg_if #(
   input logic arst_n
 );
 
+  `ifdef den1024Mb
+    `include "1024Mb_ddr3_parameters.vh"
+  `elsif den2048Mb
+    `include "2048Mb_ddr3_parameters.vh"
+  `elsif den4096Mb
+    `include "4096Mb_ddr3_parameters.vh"
+  `elsif den8192Mb
+    `include "8192Mb_ddr3_parameters.vh"
+  `else
+    `include "1024Mb_ddr3_parameters.vh"
+  `endif
+
+
+  localparam realtime TREFI = 7.8us;
+
   // -------------------------------------------------------------------------
   // 1. Initialization Handshake Signals
   // -------------------------------------------------------------------------
@@ -59,23 +74,17 @@ interface cnfg_if #(
     tREFI   <= '0;
   endtask
 
+function automatic int calc_tick(input realtime tparam,input realtime rtc_tp);
+    return int'($ceil(tparam / (rtc_tp)));
+endfunction
+
 
 task automatic apply_cfg(
+    input realtime  rtc_tp                        = 10ns,
     input logic [DRAM_ADDR_BITS-1:0] in_mr0   = 'h0D70, // WR=12, CL=11, BL=8, DLL Reset=1
     input logic [DRAM_ADDR_BITS-1:0] in_mr1   = 'h0010, // DLL Enable
     input logic [DRAM_ADDR_BITS-1:0] in_mr2   = 'h0000, // CWL=5
-    input logic [DRAM_ADDR_BITS-1:0] in_mr3   = 'h0000, // MPR=0
-    input logic [15:0]               in_tRCD  = 16'd4,   // Safe margin for >15ns
-    input logic [15:0]               in_tRP   = 16'd4,   // Safe margin for >15ns
-    input logic [15:0]               in_tRAS  = 16'd8,   // Safe margin for >37.5ns
-    input logic [15:0]               in_tRC   = 16'd12,  // Safe margin for >52.5ns
-    input logic [15:0]               in_tWR   = 16'd4,   // Safe margin for >15ns
-    input logic [15:0]               in_tRTP  = 16'd4,   // min 4tCK
-    input logic [15:0]               in_tWTR  = 16'd4,   // min 4tCK
-    input logic [15:0]               in_tRRD  = 16'd4,   // Safe margin for >10ns
-    input logic [15:0]               in_tFAW  = 16'd10,  // Safe margin for >50ns
-    input logic [15:0]               in_tRFC  = 16'd28,  // Guarantees >120ns tXPR & >110ns tRFC!
-    input logic [15:0]               in_tREFI = 16'd780  // 7.8us refresh interval
+    input logic [DRAM_ADDR_BITS-1:0] in_mr3   = 'h0000 // MPR=0
   );
 
     mr0     <= in_mr0;
@@ -83,17 +92,17 @@ task automatic apply_cfg(
     mr2     <= in_mr2;
     mr3     <= in_mr3;
 
-    tRCD    <= in_tRCD;
-    tRP     <= in_tRP;
-    tRAS    <= in_tRAS;
-    tRC     <= in_tRC;
-    tWR     <= in_tWR;
-    tRTP    <= in_tRTP;
-    tWTR    <= in_tWTR;
-    tRRD    <= in_tRRD;
-    tFAW    <= in_tFAW;
-    tRFC    <= in_tRFC;
-    tREFI   <= in_tREFI;
+    tRCD    <= calc_tick(TRCD , rtc_tp); 
+    tRP     <= calc_tick(TRP  , rtc_tp);
+    tRAS    <= calc_tick(TRAS_MIN , rtc_tp);
+    tRC     <= calc_tick(TRC  , rtc_tp);
+    tWR     <= calc_tick(TWR  , rtc_tp);
+    tRTP    <= calc_tick(TRTP , rtc_tp);
+    tWTR    <= calc_tick(TWTR , rtc_tp);
+    tRRD    <= calc_tick(TRRD , rtc_tp);
+    tFAW    <= calc_tick(TFAW , rtc_tp);
+    tRFC    <= calc_tick((TXPR > TRFC_MIN) ? TXPR : TRFC_MIN, rtc_tp) + 16;
+    tREFI   <= calc_tick(TREFI, rtc_tp) - 1;
     init_do <= 1'b0;
 
     wait (arst_n === 1'b1);
@@ -110,41 +119,38 @@ task automatic apply_cfg(
   endtask
 
   task automatic update_timings_on_the_fly(
-    input logic [15:0]               in_tRCD  = 16'd4, 
-    input logic [15:0]               in_tRP   = 16'd4, 
-    input logic [15:0]               in_tRAS  = 16'd8, 
-    input logic [15:0]               in_tRC   = 16'd12,
-    input logic [15:0]               in_tWR   = 16'd4, 
-    input logic [15:0]               in_tRTP  = 16'd4, 
-    input logic [15:0]               in_tWTR  = 16'd4, 
-    input logic [15:0]               in_tRRD  = 16'd4, 
-    input logic [15:0]               in_tFAW  = 16'd10,
-    input logic [15:0]               in_tRFC  = 16'd28,
-    input logic [15:0]               in_tREFI = 16'd780
-  );
-    @(posedge clk);
-    tRCD    <= in_tRCD;
-    tRP     <= in_tRP;
-    tRAS    <= in_tRAS;
-    tRC     <= in_tRC;
-    tWR     <= in_tWR;
-    tRTP    <= in_tRTP;
-    tWTR    <= in_tWTR;
-    tRRD    <= in_tRRD;
-    tFAW    <= in_tFAW;
-    tRFC    <= in_tRFC;
-    tREFI   <= in_tREFI;
-  endtask
+      input realtime rtc_tp   = 10ns,
+      input int  margin_ticks = 2, // Default 2 tick bariye test korbe
+      input int  custom_tREFI = 780
+    );
+      @(posedge clk);
+      tRCD  <= calc_tick(TRCD    , rtc_tp) + margin_ticks;
+      tRP   <= calc_tick(TRP     , rtc_tp) + margin_ticks;
+      tRAS  <= calc_tick(TRAS_MIN, rtc_tp) + margin_ticks;
+      tRC   <= calc_tick(TRC     , rtc_tp) + margin_ticks;
+      tWR   <= calc_tick(TWR     , rtc_tp) + margin_ticks;
+      tRTP  <= calc_tick(TRTP    , rtc_tp) + margin_ticks;
+      tWTR  <= calc_tick(TWTR    , rtc_tp) + margin_ticks;
+      tRRD  <= calc_tick(TRRD    , rtc_tp) + margin_ticks;
+      tFAW  <= calc_tick(TFAW    , rtc_tp) + margin_ticks;
+      tRFC  <= calc_tick(TRFC_MIN, rtc_tp) + margin_ticks;
+      tREFI <= custom_tREFI;
+    endtask
 
   task automatic trigger_reinit(
-    input logic [DRAM_ADDR_BITS-1:0] new_mr0,
-    input logic [DRAM_ADDR_BITS-1:0] new_mr2
+    input logic [DRAM_ADDR_BITS-1:0] new_mr0    = 'h0D70, // WR=12, CL=11, BL=8, DLL Reset=1,
+    input logic [DRAM_ADDR_BITS-1:0] new_mr1    = 'h0010, // DLL Enable
+    input logic [DRAM_ADDR_BITS-1:0] new_mr2    = 'h0000, // MPR=0,
+    input logic [DRAM_ADDR_BITS-1:0] new_mr3    = 'h0000 // MPR=0
+
   );
     @(posedge clk);
     mr0     <= new_mr0;
+    mr1     <= new_mr1;
     mr2     <= new_mr2;
+    mr3     <= new_mr3;
     init_do <= 1'b1;
-    @(posedge clk);
+    wait(init_done == 0);
     init_do <= 1'b0;
 
     do begin

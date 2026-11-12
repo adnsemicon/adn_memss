@@ -2,7 +2,7 @@
 `define __GUARD_BYTE_ENABLE_MASKING_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/byte_enable_masking_seq.sv"
+`include "sequence/byte_enable_masking_seq.sv"
 
 class byte_enable_masking_test extends base_test;
   `uvm_component_utils(byte_enable_masking_test)

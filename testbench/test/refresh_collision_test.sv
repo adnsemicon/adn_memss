@@ -2,7 +2,7 @@
 `define __GUARD_REFRESH_COLLISION_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/random_stress_seq.sv"
+`include "sequence/random_stress_seq.sv"
 
 class refresh_collision_test extends base_test;
   `uvm_component_utils(refresh_collision_test)
@@ -13,7 +13,7 @@ class refresh_collision_test extends base_test;
 
   virtual task configure_phase(uvm_phase phase);
     super.configure_phase(phase);
-    cnfg_vif.apply_cfg(.in_tREFI(16'd80));
+    cnfg_vif.set_fast_refresh(16'd100);
   endtask
 
   virtual task main_phase(uvm_phase phase);

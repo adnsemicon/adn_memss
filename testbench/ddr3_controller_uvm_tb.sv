@@ -10,13 +10,21 @@ import micron_ddr3_msg_pkg::msg_t;
 `include "test/random_stress_test.sv"
 `include "test/refresh_collision_test.sv"
 `include "test/check_initialization.sv"
-`include "test/on_the_fly_reconfig_test.sv"
+`include "test/shadow_reg_protection_test.sv"
 `include "test/reinitialization_test.sv"
 `include "test/reset_test.sv"
 
 
 module ddr3_controller_uvm_tb;
 
+  // 1 MHz   -> 1000.0 ns
+  // 8 MHz   -> 125.0 ns
+  // 16 MHz  -> 62.5 ns
+  // 32 MHz  -> 31.25 ns
+  // 50 MHz  -> 20.0 ns
+  // 100 MHz -> 10.0 ns
+
+  localparam realtime rtc_tp = 31.25ns;
   // -------------------------------------------------------------------------
   // Interface Instantiations
   // -------------------------------------------------------------------------
@@ -44,6 +52,10 @@ module ddr3_controller_uvm_tb;
     .DATA_WIDTH     (DATA_WIDTH    )     
   ) u_ddr3_if();
 
+  // signal for RTC generation
+  logic rtc;
+
+
   // -------------------------------------------------------------------------
   // DUT: ADN DDR3 Memory Controller Instantiation
   // -------------------------------------------------------------------------
@@ -56,7 +68,7 @@ module ddr3_controller_uvm_tb;
   ) u_dut (
     // Clock, RTC & Reset
     .clk             (u_ctrl_if.clk),
-    .rtc             (u_ctrl_if.rtc),
+    .rtc             (rtc),
     .arst_n          (u_ctrl_if.arst_n),
 
     // DDR3 Mode Registers (driven from cnfg_if)
@@ -176,8 +188,12 @@ module ddr3_controller_uvm_tb;
     end
   end
 
+// RTC generation;
+  always #(rtc_tp/2.0) rtc <= ~rtc;
+
   initial begin
     string test_name;
+    rtc = 1'b0;
 
     if (!$value$plusargs("TN=%s", test_name)) begin
       test_name = "base_test"; 
@@ -206,7 +222,10 @@ module ddr3_controller_uvm_tb;
       .DATA_WIDTH     (DATA_WIDTH    )    
     ))::set(null, "*", "ddr3_vif", u_ddr3_if);
 
-    // 2. Pass Micron DDR3 Model Mailboxes to Scoreboard after u_chip_array initializes them at time 0
+    // 3. Pass Real time clock period
+    uvm_config_db #(realtime)::set(null, "*", "rtc_tp", rtc_tp);
+
+    // 3. Pass Micron DDR3 Model Mailboxes to Scoreboard after u_chip_array initializes them at time 0
     fork
       begin
         #1step;
@@ -216,7 +235,7 @@ module ddr3_controller_uvm_tb;
       end
     join_none
 
-    // 3. Run UVM Test (Must be called at time 0ns)
+    // 4. Run UVM Test (Must be called at time 0ns)
     run_test(test_name);
   end
 endmodule

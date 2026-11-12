@@ -4,14 +4,6 @@
 class ddr3_monitor extends uvm_monitor;
   `uvm_component_utils(ddr3_monitor)
 
-  // virtual ddr3_if #(
-  //   .DRAM_BA_BITS   (DRAM_BA_BITS  ),  
-  //   .DRAM_ADDR_BITS (DRAM_ADDR_BITS),   
-  //   .DM_WIDTH       (DM_WIDTH      ),  
-  //   .DQS_WIDTH      (DQS_WIDTH     ),  
-  //   .DATA_WIDTH     (DATA_WIDTH    )     
-  // ) vif;
-
   virtual ddr3_if #(
     .DRAM_BA_BITS   (DRAM_BA_BITS  ),  
     .DRAM_ADDR_BITS (DRAM_ADDR_BITS),   
@@ -31,28 +23,8 @@ class ddr3_monitor extends uvm_monitor;
     super.new(name, parent);
   endfunction
 
-  // virtual function void build_phase(uvm_phase phase);
-  //   super.build_phase(phase);
-    // if (!uvm_config_db #(virtual ddr3_if #(
-    //   .DRAM_BA_BITS   (DRAM_BA_BITS  ),  
-    //   .DRAM_ADDR_BITS (DRAM_ADDR_BITS),   
-    //   .DM_WIDTH       (DM_WIDTH      ),  
-    //   .DQS_WIDTH      (DQS_WIDTH     ),  
-    //   .DATA_WIDTH     (DATA_WIDTH    )     
-    // ))::get(this, "", "ddr3_vif", vif)); begin
-    //   `uvm_fatal("NOVIF", "Virtual interface ddr3_if not set for ddr3_monitor!")
-    //end
-    // if (!uvm_config_db #(virtual ddr3_if)::get(this, "", "ddr3_vif", vif)) begin
-    //   `uvm_fatal("NOVIF", "Virtual interface ddr3_if not set for ddr3_monitor!")
-    // end
-  //   if (!uvm_config_db #(virtual ddr3_if)::get(this, "", "ddr3_vif", vif)) begin
-  //     `uvm_fatal("NOVIF", $sformatf("Virtual interface ddr3_if not set for %s! Check config_db path.", get_full_name()))
-  //   end
-  // endfunction
-
 virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    // গেট করার সময়ও হবহু একই প্যারামিটার রাখতে হবে
     if (!uvm_config_db #(virtual ddr3_if #(
       .DRAM_BA_BITS   (DRAM_BA_BITS  ),  
       .DRAM_ADDR_BITS (DRAM_ADDR_BITS),   

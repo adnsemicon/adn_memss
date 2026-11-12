@@ -2,7 +2,7 @@
 `define __GUARD_READ_BACK_PRESSURE_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/read_back_pressure_seq.sv"
+`include "sequence/read_back_pressure_seq.sv"
 
 class read_back_pressure_test extends base_test;
   `uvm_component_utils(read_back_pressure_test)
@@ -13,10 +13,9 @@ class read_back_pressure_test extends base_test;
 
   virtual task main_phase(uvm_phase phase);
     read_back_pressure_seq seq;
-    uvm_config_db#(int)::set(uvm_root::get(), "parameter", "seq_length", 4);
+    uvm_config_db#(int)::set(uvm_root::get(), "parameter", "seq_length", 6);
 
     super.main_phase(phase);
-    //phase.phase_done.set_drain_time(this, 2000ns);
     phase.raise_objection(this);
 
     `uvm_info("TEST", "Starting read_back_pressure_test sequence...", UVM_LOW)

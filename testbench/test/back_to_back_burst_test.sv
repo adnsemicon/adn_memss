@@ -2,7 +2,7 @@
 `define __GUARD_BACK_TO_BACK_BURST_TEST_SV__
 
 `include "test/base_test.sv"
-`include "obj/back_to_back_burst_seq.sv"
+`include "sequence/back_to_back_burst_seq.sv"
 
 class back_to_back_burst_test extends base_test;
   `uvm_component_utils(back_to_back_burst_test)
