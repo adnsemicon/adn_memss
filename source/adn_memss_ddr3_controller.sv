@@ -10,7 +10,7 @@ Fully Functional Fixed-Burst (mem_if) DDR3 SDRAM Controller
 - **Idle Clock Throttling & Internal 2:1 Clock Generation**: Accepts a system clock (`clk`, $F_{sys} = 2 \times F_{ddr}$) that can dynamically throttle or slow down during idle periods, and synthesizes differential DDR3 clocks (`ddr3_ck_p` / `ddr3_ck_n`) internally at `clk / 2`. Registering on alternating clock edges guarantees 1 full system clock cycle ($T_{sys} = 0.5\,t_{CK}$) of command setup time prior to the DRAM latching edge across any clock frequency.
 - **Real-Time Clock (`rtc`) Timing Engine**: Uses an independent Real-Time Clock (`rtc`) input—ranging from slow $1\text{ MHz}$, $8\text{ MHz}$, $16\text{ MHz}$, $32\text{ MHz}$ up to $100\text{ MHz}$ max—to measure all wall-clock JEDEC timing intervals ($t_{RCD}$, $t_{RP}$, $t_{RAS}$, $t_{RC}$, $t_{WR}$, $t_{RTP}$, $t_{WTR}$, $t_{RRD}$, $t_{FAW}$, $t_{RFC}$, $t_{REFI}$, and power-up reset delays) invariants of `clk` throttling.
 - **Runtime Register File Configuration & Mode Register Decoding**: All Mode Registers (`mr0`–`mr3`) and JEDEC timing parameters (in RTC ticks) are provided as runtime input ports from an external register file. The controller combinationally decodes `CL`, `CWL`, `AL`, `WR` ($t_{CK}$), `RL`, and `WL` directly from `mr0`, `mr1`, and `mr2`.
-- **Standard JEDEC Power-Up and Mode Register Synthesis**: Executes the complete JEDEC DDR3 initialization protocol upon reset release: stable power-up delay ($200\,\mu\text{s}$), active-low reset exit ($500\,\mu\text{s}$), CKE assertion ($t_{XPR}$), mode register initialization ($MR2 \rightarrow MR3 \rightarrow MR1 \rightarrow MR0$ with DLL reset), ZQ Calibration Long ($ZQCL$), and DLL lock wait.
+- **Standard JEDEC Power-Up and Mode Register Synthesis**: Executes the complete JEDEC DDR3 initialization protocol when manually triggered via `init_do` after reset release: stable power-up delay ($200\,\mu\text{s}$), active-low reset exit ($500\,\mu\text{s}$), CKE assertion ($t_{XPR}$), mode register initialization ($MR2 \rightarrow MR3 \rightarrow MR1 \rightarrow MR0$ with DLL reset), ZQ Calibration Long ($ZQCL$), and DLL lock wait.
 - **Autonomous Periodic Auto-Refresh Engine**: Built-in RTC-driven $t_{REFI}$ timer with up to 8 accumulated refresh credits. Automatically arbitrates and issues highest-priority `CMD_REFRESH` ($t_{RFC}$) bursts without host intervention, preventing DRAM data retention failure even when `clk` is throttled during idle.
 - **Synthesizable Write PHY with Center-Aligned Strobe Synthesis**: Generates clean differential DQS write strobes with JEDEC-compliant preamble and postamble. DQ and DM are launched on the negative edge of `clk`, providing an exact $90^\circ$ phase lead ($325\text{ ps}$ at $1.54\text{ GHz}$) that centers write data eyes precisely on the DQS transitions without expensive analog delay-locked loops (DLLs).
 - **Asynchronous Read Capture PHY & Dual-Edge Gearbox**: Features a dual-edge DQS-strobed capture memory with simulated analog eye centering (`#250ps`), preamble falling-edge glitch suppression, and a synchronous gearbox that transfers captured 8-beat bursts into the read FIFO across the system clock domain.
@@ -409,6 +409,7 @@ module adn_memss_ddr3_controller #(
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   typedef enum logic [4:0] {
+    ST_INIT_WAIT,
     ST_RESET_LOW,
     ST_RESET_HIGH,
     ST_CKE_HIGH,
@@ -492,7 +493,7 @@ module adn_memss_ddr3_controller #(
 
   always_ff @(posedge clk or negedge arst_n) begin
     if (!arst_n) begin
-      state            <= ST_RESET_LOW;
+      state            <= ST_INIT_WAIT;
       tck_timer        <= 16'd0;
       rtc_state_start  <= 32'd0;
       rtc_act_start    <= 32'd0;
@@ -561,10 +562,11 @@ module adn_memss_ddr3_controller #(
         active_tREFI <= tREFI;
       end
 
-      // Capture re-initialization request on any clk edge; drop init_done immediately if idle and queues drained
-      if (init_do && init_done) begin
+      // Capture initialization / re-initialization request on any clk edge;
+      // drop init_done immediately if idle and queues drained
+      if (init_do && (init_done || (state == ST_INIT_WAIT))) begin
         init_req_pending <= 1'b1;
-        if ((state == ST_IDLE) && wa_fifo_empty && ra_fifo_empty) begin
+        if (init_done && (state == ST_IDLE) && wa_fifo_empty && ra_fifo_empty) begin
           init_done <= 1'b0;
         end
       end
@@ -572,6 +574,21 @@ module adn_memss_ddr3_controller #(
       // Main FSM transitions synchronous to DDR clock boundary
       if (tck_tick) begin
         case (state)
+          // ---------------------------------------------------------
+          // Wait for Manual Initialization Request
+          // ---------------------------------------------------------
+          ST_INIT_WAIT: begin
+            rst_n_reg <= 1'b0;
+            cke_reg   <= 1'b0;
+            cmd_reg   <= CMD_DESELECT;
+            tck_timer <= 16'd0;
+            if (init_do || init_req_pending) begin
+              init_req_pending <= 1'b0;
+              rtc_state_start  <= rtc_tick_cnt;
+              state            <= ST_RESET_LOW;
+            end
+          end
+
           // ---------------------------------------------------------
           // Power-Up & Initialization Sequence
           // ---------------------------------------------------------
@@ -909,7 +926,7 @@ module adn_memss_ddr3_controller #(
             end
           end
 
-          default: state <= ST_RESET_LOW;
+          default: state <= ST_INIT_WAIT;
         endcase
       end
     end
