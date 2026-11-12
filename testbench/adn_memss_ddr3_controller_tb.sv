@@ -18,6 +18,9 @@
 
 module adn_memss_ddr3_controller_tb;
 
+  // bring in the testbench essentials functions and macros
+  `include "vip/adn_common_tb_headers.sv"
+
   // -------------------------------------------------------------------------
   // Parameters
   // -------------------------------------------------------------------------
@@ -232,7 +235,6 @@ module adn_memss_ddr3_controller_tb;
   // -------------------------------------------------------------------------
   int total_writes = 0;
   int total_reads = 0;
-  int error_count = 0;
 
   realtime last_clk_pos = 0;
   realtime last_ck_pos = 0;
@@ -249,7 +251,9 @@ module adn_memss_ddr3_controller_tb;
       if (ddr3_ck_n !== 1'b0) begin
         $display("[ERROR @ %0t] Differential clock complementarity violation: ck_p=%b, ck_n=%b",
                  $realtime, ddr3_ck_p, ddr3_ck_n);
-        error_count++;
+        note_case(0);
+      end else begin
+        note_case(1);
       end
       if (last_ck_pos > 0) measured_ck_period = $realtime - last_ck_pos;
       last_ck_pos = $realtime;
@@ -453,7 +457,9 @@ module adn_memss_ddr3_controller_tb;
       if (actual_beat !== expected_beat) begin
         $display("[ERROR @ %0t] Mismatch at Addr 0x%08h Beat %0d! Expected: 0x%016h, Got: 0x%016h",
                  $realtime, base_addr, beat, expected_beat, actual_beat);
-        error_count++;
+        note_case(0);
+      end else begin
+        note_case(1);
       end
 
       // Accept exactly the sampled beat on the next clock edge.
@@ -482,7 +488,9 @@ module adn_memss_ddr3_controller_tb;
         $display(
             "[ERROR @ %0t] DDR3 CK period (%0.1f ps) did not follow throttled clk (expected %0.1f ps)!",
             $realtime, measured_ck_period, expected_ck_period);
-        error_count++;
+        note_case(0);
+      end else begin
+        note_case(1);
       end
     end
     set_clk_throttle(1);
@@ -523,7 +531,29 @@ module adn_memss_ddr3_controller_tb;
     #(10 * T_SYS_NOM);
     @(posedge clk);
     arst_n <= 1'b1;
-    $display("[TB %0t] Reset released. Waiting for DDR3 Initialization...", $realtime);
+    $display("[TB %0t] Reset released. Verifying controller does not self-initialize...",
+             $realtime);
+
+    // Wait long enough that auto-init would have progressed/completed if enabled
+    repeat (200) @(posedge clk);
+    if (init_done !== 1'b0 || ddr3_rst_n !== 1'b0 || ddr3_cke !== 1'b0 ||
+        wa_ready !== 1'b0 || ra_ready !== 1'b0 || idle !== 1'b0) begin
+      $display(
+          "[ERROR @ %0t] Controller self-initialized or left reset state without init_do! init_done=%b rst_n=%b cke=%b wa_ready=%b ra_ready=%b idle=%b",
+          $realtime, init_done, ddr3_rst_n, ddr3_cke, wa_ready, ra_ready, idle);
+      note_case(0);
+    end else begin
+      note_case(1);
+    end
+
+    // Manually trigger DDR3 Initialization
+    @(posedge clk);
+    init_do <= 1'b1;
+    @(posedge clk);
+    init_do <= 1'b0;
+    $display(
+        "[TB %0t] Manual initialization triggered via init_do. Waiting for DDR3 Initialization...",
+        $realtime);
 
     wait (init_done == 1'b1);
     $display("[TB %0t] *** Phase 0: JEDEC Power-up & ZQCL Calibration Complete! ***\n", $realtime);
@@ -724,15 +754,7 @@ module adn_memss_ddr3_controller_tb;
              total_writes * 8);
     $display("  Total Read Transactions Completed  : %0d (x 8 beats = %0d beats)", total_reads,
              total_reads * 8);
-    $display("  Total Data Mismatches Detected     : %0d", error_count);
     $display("=================================================================");
-    if (error_count == 0) begin
-      $display("  >>> STATUS: PASSED! ALL OPERATIONS VERIFIED SUCCESSFULLY! <<<  ");
-    end else begin
-      $display("  >>> STATUS: FAILED! FOUND %0d ERRORS DURING EXECUTION! <<<     ", error_count);
-      $fatal(1, "Simulation failed with %0d data mismatches", error_count);
-    end
-    $display("=================================================================\n");
 
     $finish;
   end
