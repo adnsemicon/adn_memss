@@ -107,10 +107,14 @@ task automatic apply_cfg(
 
     wait (arst_n === 1'b1);
     @(posedge clk);
+    init_do <= 1;
+    // @(posedge clk);
+    // init_do <= 0;
     do begin
       @(posedge clk);
-    end while (init_done !== 1'b1);
-    @(posedge clk);
+    end while (init_done !== 1'b0);
+    init_do <= 0;
+
   endtask
 
   task automatic set_fast_refresh(input logic [15:0] fast_tREFI = 16'd200);
@@ -152,10 +156,6 @@ task automatic apply_cfg(
     init_do <= 1'b1;
     wait(init_done == 0);
     init_do <= 1'b0;
-
-    do begin
-      @(posedge clk);
-    end while (init_done !== 1'b1);
   endtask
 
 endinterface
